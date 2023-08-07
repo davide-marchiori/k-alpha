@@ -1,9 +1,13 @@
-import Image from 'next/image'
+'use client'
+
+import { DataTypeSelector } from '@/components/DataTypeSelector'
+import { DropZone } from '@/components/DropZone'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      
+    <main className="items-center justify-between p-12">
+      <DropZone/>
+      <DataTypeSelector />
     </main>
   )
 }
