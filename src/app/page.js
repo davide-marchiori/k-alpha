@@ -1,13 +1,26 @@
-'use client'
+"use client";
 
-import { DataTypeSelector } from '@/components/DataTypeSelector'
-import { DropZone } from '@/components/DropZone'
+import { useState } from "react";
+import { DataTypeSelector } from "@/components/DataTypeSelector";
+import { DropZone } from "@/components/DropZone";
+import { Output } from "@/components/Output";
+import { options } from "@/constants/Options";
 
 export default function Home() {
+  const [data, setData] = useState([]);
+  const [checkedState, setCheckedState] = useState(
+    new Array(options.length).fill(false)
+  );
+
   return (
-    <main className="items-center justify-between p-12">
-      <DropZone/>
-      <DataTypeSelector />
+    <main className="bg-white p-5">
+      <DropZone data={data} setData={setData} />
+      <DataTypeSelector
+        checkedState={checkedState}
+        setCheckedState={setCheckedState}
+        options={options}
+      />
+      <Output data={data} checkedState={checkedState}/>
     </main>
-  )
+  );
 }
