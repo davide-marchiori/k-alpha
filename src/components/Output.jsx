@@ -31,7 +31,7 @@ export function Output({ data, checkedState }) {
       // These min and max values use the more reliable reduce function
       // filter((x) => x)) removes all empty values
       // Does not unse the min and max functions because they are not reliable
-      console.log("data: ", data);
+      //console.log("data: ", data);
       const minRate = data
         .flat()
         .filter((x) => x)
@@ -45,14 +45,14 @@ export function Output({ data, checkedState }) {
           return p > v ? p : v;
         });
 
-      console.log("min rate: ", minRate);
-      console.log("max rate: ", maxRate);
+      //console.log("min rate: ", minRate);
+      //console.log("max rate: ", maxRate);
 
       // This matrix gives the distribution of raters by unit (row) and by category (column)
       // The last column counts the number of empty values
       // It does not include rows with one or less coders
       const countMatrix = countOccurrencesInRange(data, minRate, maxRate);
-      console.log("occurrencesInArrays: ", countMatrix);
+      //console.log("occurrencesInArrays: ", countMatrix);
 
       const sumsByRow = countMatrix
         .map((row) => row.slice(0, -1))
@@ -68,9 +68,10 @@ export function Output({ data, checkedState }) {
         .map((v) => v / countMatrix.length)
         .map((x) => x / r_bar);
 
-      console.log("pie_k probabilities: ", pie_k);
+      //console.log("pie_k probabilities: ", pie_k);
 
-      const p_a =
+      const p_a = [
+        // Nominal scale
         countMatrix
           .map((row, rowIndex) => {
             return row
@@ -89,15 +90,155 @@ export function Output({ data, checkedState }) {
               );
           })
           .map((row) => row.reduce((a, b) => a + b, 0)) // Sum of each row
-          .reduce((a, b) => a + b, 0) / countMatrix.length; // Sum of all row sums divided by the number of rows
-
-      const p_e = pie_k
-        .map((x, idx1) =>
-          pie_k
-            .map((y, idx2) => x * y * (idx1 === idx2 ? 1 : 0))
-            .reduce((a, b) => a + b, 0)
-        )
-        .reduce((a, b) => a + b, 0);
+          .reduce((a, b) => a + b, 0) / countMatrix.length, // Sum of all row sums divided by the number of rows
+        // Ordinal scale
+        countMatrix
+          .map((row, rowIndex) => {
+            return row
+              .slice(0, -1)
+              .map(
+                (val, colIndex) =>
+                  (val *
+                    (countMatrix[rowIndex]
+                      .slice(0, -1)
+                      .reduce(
+                        (acc, cur, i) =>
+                          acc +
+                          cur *
+                            (i === colIndex
+                              ? 1
+                              : 1 -
+                                ((Math.max(colIndex, i) -
+                                  Math.min(colIndex, i) +
+                                  1) *
+                                  (Math.max(colIndex, i) -
+                                    Math.min(colIndex, i))) /
+                                  (countMatrix[rowIndex].slice(0, -1).length *
+                                    (countMatrix[rowIndex].slice(0, -1).length -
+                                      1))),
+                        0
+                      ) -
+                      1)) /
+                  (r_bar * (sumsByRow[rowIndex] - 1))
+              );
+          })
+          .map((row) => row.reduce((a, b) => a + b, 0)) // Sum of each row
+          .reduce((a, b) => a + b, 0) / countMatrix.length, // Sum of all row sums divided by the number of rows
+        // Interval scale
+        countMatrix
+          .map((row, rowIndex) => {
+            return row
+              .slice(0, -1)
+              .map(
+                (val, colIndex) =>
+                  (val *
+                    (countMatrix[rowIndex]
+                      .slice(0, -1)
+                      .reduce(
+                        (acc, cur, i) =>
+                          acc +
+                          cur *
+                            (i === colIndex
+                              ? 1
+                              : 1 -
+                                Math.pow(colIndex - i, 2) /
+                                  Math.pow(maxRate - minRate, 2)),
+                        0
+                      ) -
+                      1)) /
+                  (r_bar * (sumsByRow[rowIndex] - 1))
+              );
+          })
+          .map((row) => row.reduce((a, b) => a + b, 0)) // Sum of each row
+          .reduce((a, b) => a + b, 0) / countMatrix.length, // Sum of all row sums divided by the number of rows
+        // Ratio scale
+        countMatrix
+          .map((row, rowIndex) => {
+            return row
+              .slice(0, -1)
+              .map(
+                (val, colIndex) =>
+                  (val *
+                    (countMatrix[rowIndex]
+                      .slice(0, -1)
+                      .reduce(
+                        (acc, cur, i) =>
+                          acc +
+                          cur *
+                            (i === colIndex
+                              ? 1
+                              : 1 -
+                                Math.pow(colIndex - i, 2) /
+                                  Math.pow(colIndex + i, 2)),
+                        0
+                      ) -
+                      1)) /
+                  (r_bar * (sumsByRow[rowIndex] - 1))
+              );
+          })
+          .map((row) => row.reduce((a, b) => a + b, 0)) // Sum of each row
+          .reduce((a, b) => a + b, 0) / countMatrix.length, // Sum of all row sums divided by the number of rows
+      ];
+      const p_e = [
+        // Nominal scale
+        pie_k
+          .map((x, idx1) =>
+            pie_k
+              .map((y, idx2) => x * y * (idx1 === idx2 ? 1 : 0))
+              .reduce((a, b) => a + b, 0)
+          )
+          .reduce((a, b) => a + b, 0),
+        // Ordinal scale
+        pie_k
+          .map((x, idx1) =>
+            pie_k
+              .map(
+                (y, idx2) =>
+                  x *
+                  y *
+                  (idx1 === idx2
+                    ? 1
+                    : 1 -
+                      ((Math.max(idx1, idx2) - Math.min(idx1, idx2) + 1) *
+                        (Math.max(idx1, idx2) - Math.min(idx1, idx2))) /
+                        (countMatrix[0].slice(0, -1).length *
+                          (countMatrix[0].slice(0, -1).length - 1)))
+              )
+              .reduce((a, b) => a + b, 0)
+          )
+          .reduce((a, b) => a + b, 0),
+        // Interval scale
+        pie_k
+          .map((x, idx1) =>
+            pie_k
+              .map(
+                (y, idx2) =>
+                  x *
+                  y *
+                  (idx1 === idx2
+                    ? 1
+                    : 1 -
+                      Math.pow(idx1 - idx2, 2) / Math.pow(maxRate - minRate, 2))
+              )
+              .reduce((a, b) => a + b, 0)
+          )
+          .reduce((a, b) => a + b, 0),
+        // Ratio scale
+        pie_k
+          .map((x, idx1) =>
+            pie_k
+              .map(
+                (y, idx2) =>
+                  x *
+                  y *
+                  (idx1 === idx2
+                    ? 1
+                    : 1 - Math.pow(idx1 - idx2, 2) / Math.pow(idx1 + idx2, 2))
+              )
+              .reduce((a, b) => a + b, 0)
+          )
+          .reduce((a, b) => a + b, 0),
+      ];
 
       setOutput({
         minRate: minRate,
@@ -107,10 +248,10 @@ export function Output({ data, checkedState }) {
         pie_k: pie_k,
         p_a: p_a,
         p_e: p_e,
-        k_alpha_nominal: ((p_a - p_e) / (1 - p_e)).toFixed(3),
-        k_alpha_ordinal: ((p_a - p_e) / (1 - p_e)).toFixed(3),
-        k_alpha_interval: ((p_a - p_e) / (1 - p_e)).toFixed(3),
-        k_alpha_ratio: ((p_a - p_e) / (1 - p_e)).toFixed(3),
+        k_alpha_nominal: ((p_a[0] - p_e[0]) / (1 - p_e[0])).toFixed(3),
+        k_alpha_ordinal: ((p_a[1] - p_e[1]) / (1 - p_e[1])).toFixed(3),
+        k_alpha_interval: ((p_a[2] - p_e[2]) / (1 - p_e[2])).toFixed(3),
+        k_alpha_ratio: ((p_a[3] - p_e[3]) / (1 - p_e[3])).toFixed(3),
       });
     }
   }, [data, checkedState]);
@@ -124,11 +265,13 @@ export function Output({ data, checkedState }) {
         <>
           <p>Min rate: {output.minRate}</p>
           <p>Max rate: {output.maxRate}</p>
-          <p>Number of cases considered: {output.cases}</p>
+          <p>Number of items considered: {output.cases}</p>
           {checkedState[0] && (
             <p>K-alpha (nominal): {output.k_alpha_nominal}</p>
           )}
-          {checkedState[1] && <p>K-alpha (ordinal): {output.k_alpha_ordinal}</p>}
+          {checkedState[1] && (
+            <p>K-alpha (ordinal): {output.k_alpha_ordinal}</p>
+          )}
           {checkedState[2] && (
             <p>K-alpha (interval): {output.k_alpha_interval}</p>
           )}
