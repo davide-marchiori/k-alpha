@@ -82,7 +82,7 @@ export function DropZone({ data, setData }) {
       const parsedData = csv?.data;
       let error = false;
       if (!parsedData.every((row) => row.length === parsedData[0].length)) {
-        setErrors("Error: Items must be evaluated by the same number of codes; check for missing codes, or redundant commas");
+        setErrors("Error: Items must be evaluated by the same number of coders; check for missing codes, or redundant commas");
         setIsSuccess(false);
         error = true;
       }
