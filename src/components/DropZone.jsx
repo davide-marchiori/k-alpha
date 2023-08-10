@@ -30,10 +30,10 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-export function DropZone({data, setData}) {
+export function DropZone({ data, setData }) {
   const [errors, setErrors] = useState("");
   const [file, setFile] = useState(null);
-  const [isSuccess, setIsSuccess] = useState(false);  
+  const [isSuccess, setIsSuccess] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -73,25 +73,37 @@ export function DropZone({data, setData}) {
   useEffect(() => {
     if (!file) return;
     const reader = new FileReader();
+    const regex = /[^0-9.,]/g;
     reader.onload = async ({ target }) => {
       const csv = Papa.parse(target.result, {
         skipEmptyLines: true,
         header: false,
       });
-      const parsedData = csv?.data;      
+      const parsedData = csv?.data;
+      let error = false;
       if (!parsedData.every((row) => row.length === parsedData[0].length)) {
-        setErrors("Error: All rows must have the same number of codes");
+        setErrors("Error: Items must be given the same number of codes");
         setIsSuccess(false);
+        error = true;
       }
       if (parsedData[0].length < 3) {
         setErrors("Error: There must be at least 3 coders");
         setIsSuccess(false);
+        error = true;
       }
       if (parsedData.length < 2) {
         setErrors("Error: There must be at least 2 coded items");
         setIsSuccess(false);
+        error = true;
       }
-      setData(parsedData);
+      if (regex.test(parsedData.flat())) {
+        setErrors("Error: Invalid characters found");
+        setIsSuccess(false);
+        error = true;
+      }
+      if (!error) {
+        setData(parsedData);
+      }
     };
     reader.readAsText(file);
   }, [file]);

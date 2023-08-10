@@ -30,41 +30,47 @@ export function Output({ data, checkedState }) {
     if (data.length > 0 && !checkedState.every((v) => v === false)) {
       // These min and max values use the more reliable reduce function
       // filter((x) => x)) removes all empty values
+      // Does not unse the min and max functions because they are not reliable
       console.log("data: ", data);
-      const min = Math.min(
-        ...data
-          .flat()
-          .filter((x) => x)
-          .reduce(function (p, v) {
-            return p < v ? p : v;
-          })
-      );
-      const max = Math.max(
-        ...data
-          .flat()
-          .filter((x) => x)
-          .reduce(function (p, v) {
-            return p > v ? p : v;
-          })
-      );
+      const minRate = data
+        .flat()
+        .filter((x) => x)
+        .reduce(function (p, v) {
+          return p < v ? p : v;
+        });
+      const maxRate = data
+        .flat()
+        .filter((x) => x)
+        .reduce(function (p, v) {
+          return p > v ? p : v;
+        });
 
-      console.log("min rate: ", min);
-      console.log("max: ", max);
+      console.log("min rate: ", minRate);
+      console.log("max rate: ", maxRate);
 
-      const countMatrix = countOccurrencesInRange(data, min, max);
+      // This matrix gives the distribution of raters by unit (row) and by category (column)
+      // The last column counts the number of empty values
+      // It does not include rows with one or less coders
+      const countMatrix = countOccurrencesInRange(data, minRate, maxRate);
       console.log("occurrencesInArrays: ", countMatrix);
-
-      const colAvg = countMatrix
-        .reduce((acc, val) => acc.map((v, i) => v + val[i]))
-        .map((v) => v / countMatrix.length);
-
-      console.log("avg by column: ", colAvg);
 
       const sumsByRow = countMatrix
         .map((row) => row.slice(0, -1))
         .map((row) => row.reduce((a, b) => a + b, 0));
 
-      const p_ai =
+      // Average number of observers per unit - 𝑟̅
+      const r_bar = sumsByRow.reduce((a, b) => a + b, 0) / sumsByRow.length;
+
+      // Probability 𝜋𝑘 that a randomly selected observer will classify any given unit into category 𝑘
+      // Vector of length max - min + 1
+      const pie_k = countMatrix
+        .reduce((acc, val) => acc.map((v, i) => v + val[i]))
+        .map((v) => v / countMatrix.length)
+        .map((x) => x / r_bar);
+
+      console.log("pie_k probabilities: ", pie_k);
+
+      const p_a =
         countMatrix
           .map((row, rowIndex) => {
             return row
@@ -79,30 +85,32 @@ export function Output({ data, checkedState }) {
                         0
                       ) -
                       1)) /
-                  ((sumsByRow.reduce((a, b) => a + b, 0) / sumsByRow.length) *
-                    (countMatrix[rowIndex].reduce((acc, curr) => acc + curr) -
-                      1))
+                  (r_bar * (sumsByRow[rowIndex] - 1))
               );
           })
-          .map((row) => row.reduce((a, b) => a + b, 0))
-          .reduce((a, b) => a + b, 0) / countMatrix.length;
+          .map((row) => row.reduce((a, b) => a + b, 0)) // Sum of each row
+          .reduce((a, b) => a + b, 0) / countMatrix.length; // Sum of all row sums divided by the number of rows
 
-      const pie = colAvg.map(
-        (x) => x / (sumsByRow.reduce((a, b) => a + b, 0) / sumsByRow.length)
-      );
-      const p_e = pie
-        .flatMap((x, i) => pie.slice(i).map((y) => x * y * 2 * (x === y)))
+      const p_e = pie_k
+        .map((x, idx1) =>
+          pie_k
+            .map((y, idx2) => x * y * (idx1 === idx2 ? 1 : 0))
+            .reduce((a, b) => a + b, 0)
+        )
         .reduce((a, b) => a + b, 0);
 
       setOutput({
-        minRate: min,
-        maxRate: max,
-        avg: colAvg,
+        minRate: minRate,
+        maxRate: maxRate,
+        cases: countMatrix.length,
         rowSum: sumsByRow.reduce((a, b) => a + b, 0) / sumsByRow.length,
-        p_ai: p_ai,
+        pie_k: pie_k,
+        p_a: p_a,
         p_e: p_e,
-
-
+        k_alpha_nominal: ((p_a - p_e) / (1 - p_e)).toFixed(3),
+        k_alpha_ordinal: ((p_a - p_e) / (1 - p_e)).toFixed(3),
+        k_alpha_interval: ((p_a - p_e) / (1 - p_e)).toFixed(3),
+        k_alpha_ratio: ((p_a - p_e) / (1 - p_e)).toFixed(3),
       });
     }
   }, [data, checkedState]);
@@ -112,14 +120,21 @@ export function Output({ data, checkedState }) {
       <legend className="text-base">Output</legend>
       {data.length === 0 && <p>Upload a datafile</p>}
       {checkedState.every((v) => v === false) && <p>Select the type of data</p>}
-      {data.length > 0 && !checkedState.every((v) => v === false) && <p>here's the result: {output.rowSum}</p>}
       {data.length > 0 && !checkedState.every((v) => v === false) && (
         <>
-          <p>here's the result: {output.p_ai}</p>
-          <p>here's the result: {output.p_e}</p>
-          <p>here's the result: {((output.p_ai - output.p_e) / (1 - output.p_e)).toFixed(3)}</p>
+          <p>Min rate: {output.minRate}</p>
+          <p>Max rate: {output.maxRate}</p>
+          <p>Number of cases considered: {output.cases}</p>
+          {checkedState[0] && (
+            <p>K-alpha (nominal): {output.k_alpha_nominal}</p>
+          )}
+          {checkedState[1] && <p>K-alpha (ordinal): {output.k_alpha_ordinal}</p>}
+          {checkedState[2] && (
+            <p>K-alpha (interval): {output.k_alpha_interval}</p>
+          )}
+          {checkedState[3] && <p>K-alpha (ratio): {output.k_alpha_ratio}</p>}
         </>
-      )}      
+      )}
     </fieldset>
   );
 }
