@@ -73,16 +73,20 @@ export function DropZone({ data, setData }) {
   useEffect(() => {
     if (!file) return;
     const reader = new FileReader();
-    const regex = /[^0-9.,]/g;
+    const regex = /^(?:\d+(?:[.,]\d+)?|NA)(?:,(?:\d+(?:[.,]\d+)?|NA))*$/;
     reader.onload = async ({ target }) => {
       const csv = Papa.parse(target.result, {
         skipEmptyLines: true,
         header: false,
+        dynamicTyping: true,
+        //transform: (value) => {if (value === "NA") return null; return value},
       });
       const parsedData = csv?.data;
       let error = false;
       if (!parsedData.every((row) => row.length === parsedData[0].length)) {
-        setErrors("Error: Items must be evaluated by the same number of coders; check for missing codes, or redundant commas");
+        setErrors(
+          "Error: Items must be evaluated by the same number of coders; check for missing codes, or redundant commas"
+        );
         setIsSuccess(false);
         error = true;
       }
@@ -96,13 +100,23 @@ export function DropZone({ data, setData }) {
         setIsSuccess(false);
         error = true;
       }
-      if (regex.test(parsedData.flat())) {
-        setErrors("Error: Invalid characters found");
+      if (!regex.test(parsedData.flat())) {
+        if (/,,+/.test(parsedData.flat())) {
+          setErrors("Error: Found consecutive or end-of-line commas");
+        } else if (/(Na|na|nA)/.test(parsedData.flat())) {
+          setErrors("Error: Use 'NA' for missing codes (case sensitive)");
+        } else {
+          setErrors("Error: Invalid characters found");
+        }
         setIsSuccess(false);
         error = true;
       }
       if (!error) {
-        setData(parsedData);
+        setData(
+          parsedData.map((row) =>
+            row.map((code) => (code === "NA" ? "" : code))
+          )
+        );
       }
     };
     reader.readAsText(file);
@@ -138,11 +152,14 @@ export function DropZone({ data, setData }) {
       <legend className="text-base">Upload file</legend>
       <div className="mb-3" {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <div className="relative flex flex-col items-center mt-4">
+        <div className="relative flex flex-col items-center text-gray-900 mt-4">
           {!isDragActive && "Click here or drop a file to upload!"}
           {isDragActive && !isDragReject && "Drop it here!"}
           {isDragReject && "File type not accepted, sorry!"}
           <div className="flex">(Only *.csv will be accepted)</div>
+          <div className="flex">
+            Check instructions on how to prepare your datafile
+          </div>
         </div>
       </div>
       <div>
@@ -163,12 +180,15 @@ export function DropZone({ data, setData }) {
                   Number of coded items: <b>{data.length}</b>
                 </p>
                 <p>
-                  Missing codes:{" "}
+                  NA codes:{" "}
                   <b>
                     {data.reduce(
                       (acc, curr) =>
                         acc +
-                        curr.reduce((acc, curr) => acc + (curr === ""), 0),
+                        curr.reduce(
+                          (acc, curr) => acc + (curr === "" ? 1 : 0),
+                          0
+                        ),
                       0
                     )}
                   </b>{" "}

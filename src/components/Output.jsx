@@ -27,7 +27,7 @@ export function Output({ data, checkedState }) {
   };
 
   useEffect(() => {
-    if (data.length > 0 && !checkedState.every((v) => v === false)) {
+    if (data.length > 0 && checkedState !== "") {
       // These min and max values use the more reliable reduce function
       // filter((x) => x)) removes all empty values
       // Does not unse the min and max functions because they are not reliable
@@ -52,7 +52,7 @@ export function Output({ data, checkedState }) {
       // The last column counts the number of empty values
       // It does not include rows with one or less coders
       const countMatrix = countOccurrencesInRange(data, minRate, maxRate);
-      //console.log("occurrencesInArrays: ", countMatrix);
+      console.log("occurrencesInArrays: ", countMatrix);
 
       const sumsByRow = countMatrix
         .map((row) => row.slice(0, -1))
@@ -69,7 +69,6 @@ export function Output({ data, checkedState }) {
         .map((x) => x / r_bar);
 
       //console.log("pie_k probabilities: ", pie_k);
-
       const p_a = [
         // Nominal scale
         countMatrix
@@ -248,10 +247,16 @@ export function Output({ data, checkedState }) {
         pie_k: pie_k,
         p_a: p_a,
         p_e: p_e,
-        k_alpha_nominal: ((p_a[0] - p_e[0]) / (1 - p_e[0])).toFixed(3),
-        k_alpha_ordinal: ((p_a[1] - p_e[1]) / (1 - p_e[1])).toFixed(3),
-        k_alpha_interval: ((p_a[2] - p_e[2]) / (1 - p_e[2])).toFixed(3),
-        k_alpha_ratio: ((p_a[3] - p_e[3]) / (1 - p_e[3])).toFixed(3),
+        k_alpha:
+          checkedState === "nominal"
+            ? ((p_a[0] - p_e[0]) / (1 - p_e[0])).toFixed(3)
+            : checkedState === "ordinal"
+            ? ((p_a[1] - p_e[1]) / (1 - p_e[1])).toFixed(3)
+            : checkedState === "interval"
+            ? ((p_a[2] - p_e[2]) / (1 - p_e[2])).toFixed(3)
+            : checkedState === "ratio"
+            ? ((p_a[3] - p_e[3]) / (1 - p_e[3])).toFixed(3)
+            : "",
       });
     }
   }, [data, checkedState]);
@@ -260,22 +265,24 @@ export function Output({ data, checkedState }) {
     <fieldset className="border border-solid border-gray-300 p-3 m-3">
       <legend className="text-base">Output</legend>
       {data.length === 0 && <p>Upload a datafile</p>}
-      {checkedState.every((v) => v === false) && <p>Select the type of data</p>}
-      {data.length > 0 && !checkedState.every((v) => v === false) && (
+      {checkedState === "" && <p>Select the type of data</p>}
+      {data.length > 0 && checkedState !== "" && (
         <>
-          <p>Min rate: {output.minRate}</p>
-          <p>Max rate: {output.maxRate}</p>
-          <p>Number of items considered: {output.cases}</p>
-          {checkedState[0] && (
-            <p>K-alpha (nominal): {output.k_alpha_nominal}</p>
-          )}
-          {checkedState[1] && (
-            <p>K-alpha (ordinal): {output.k_alpha_ordinal}</p>
-          )}
-          {checkedState[2] && (
-            <p>K-alpha (interval): {output.k_alpha_interval}</p>
-          )}
-          {checkedState[3] && <p>K-alpha (ratio): {output.k_alpha_ratio}</p>}
+          <p>
+            Min rate: <b>{output.minRate}</b>
+          </p>
+          <p>
+            Max rate: <b>{output.maxRate}</b>
+          </p>
+          <p>
+            Number of items considered: <b>{output.cases}</b>
+          </p>
+          {
+            <p>
+              Krippendorf's-alpha (<i>{checkedState}</i>):{" "}
+              <b>{output.k_alpha}</b>
+            </p>
+          }
         </>
       )}
     </fieldset>

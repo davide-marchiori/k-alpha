@@ -8,9 +8,10 @@ import { options } from "@/constants/Options";
 
 export default function Home() {
   const [data, setData] = useState([]);
-  const [checkedState, setCheckedState] = useState(
-    new Array(options.length).fill(false)
-  );
+  const [checkedState, setCheckedState] = useState("");
+
+  console.log("checked state: ", checkedState);
+  console.log("data: ", data);
 
   return (
     <main className="bg-white p-5">
@@ -20,7 +21,7 @@ export default function Home() {
         setCheckedState={setCheckedState}
         options={options}
       />
-      <Output data={data} checkedState={checkedState}/>
+      <Output data={data} checkedState={checkedState} />
     </main>
   );
 }
