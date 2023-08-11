@@ -112,6 +112,9 @@ export function DropZone({ data, setData }) {
         error = true;
       }
       if (!error) {
+        // If no errors, set data
+        // NAs are converted to empty strings; this is to avoid issues with the table:
+        // in this way all cells are numbers or empty strings
         setData(
           parsedData.map((row) =>
             row.map((code) => (code === "NA" ? "" : code))

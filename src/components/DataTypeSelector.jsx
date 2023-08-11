@@ -7,7 +7,7 @@ export function DataTypeSelector({ options, setCheckedState, checkedState }) {
 
   return (
     <fieldset className="border border-solid border-gray-300 p-3 m-3">
-      <legend className="sr-only">Type of Data</legend>
+      <legend className="text-base">Type of Data</legend>
       <div className="space-y-5">
         {options.map((option, index) => (
           <div key={index} className="relative flex items-start">
