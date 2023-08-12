@@ -73,7 +73,7 @@ export function DropZone({ data, setData }) {
   useEffect(() => {
     if (!file) return;
     const reader = new FileReader();
-    const regex = /^(?:\d+(?:[.,]\d+)?|NA)(?:,(?:\d+(?:[.,]\d+)?|NA))*$/;
+    const regex = /^(\d+|NA)(,(\d+|NA))*$/;
     reader.onload = async ({ target }) => {
       const csv = Papa.parse(target.result, {
         skipEmptyLines: true,
@@ -90,8 +90,8 @@ export function DropZone({ data, setData }) {
         setIsSuccess(false);
         error = true;
       }
-      if (parsedData[0].length < 3) {
-        setErrors("Error: There must be at least 3 coders");
+      if (parsedData[0].length < 2) {
+        setErrors("Error: There must be at least 2 coders");
         setIsSuccess(false);
         error = true;
       }
@@ -101,10 +101,32 @@ export function DropZone({ data, setData }) {
         error = true;
       }
       if (!regex.test(parsedData.flat())) {
+        console.log(
+          parsedData.flat().every((value) => {
+            if (!/^\d+\.\d{0,2}$/.test(value)) return true;
+            return false;
+          })
+        );
         if (/,,+/.test(parsedData.flat())) {
           setErrors("Error: Found consecutive or end-of-line commas");
         } else if (/(Na|na|nA)/.test(parsedData.flat())) {
           setErrors("Error: Use 'NA' for missing codes (case sensitive)");
+        } else if (
+          !parsedData.flat().every((value) => {
+            if (!/^\d+\.\d{0,2}$/.test(value)) return true;
+            return false;
+          })
+        ) {
+          setErrors("Error: The file contains decimal values");
+          console.log("found a decimal number");
+        } else if (
+          !parsedData.flat().every((value) => {
+            if (!/^-?\d+(\.\d{1,2})?$/.test(value)) return true;
+            return false;
+          })
+        ) {
+          setErrors("Error: The file contains negative values");
+          console.log("found a negative number");
         } else {
           setErrors("Error: Invalid characters found");
         }
