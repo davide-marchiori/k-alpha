@@ -10,8 +10,8 @@ export default function Home() {
   const [data, setData] = useState([]);
   const [checkedState, setCheckedState] = useState("");
 
-  console.log("checked state: ", checkedState);
-  console.log("data: ", data);
+  // console.log("checked state: ", checkedState);
+  // console.log("data: ", data);
 
   return (
     <main className="bg-white p-5">

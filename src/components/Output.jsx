@@ -52,7 +52,7 @@ export function Output({ data, checkedState }) {
       // The last column counts the number of empty values
       // It does not include rows with one or less coders
       const countMatrix = countOccurrencesInRange(data, minRate, maxRate);
-      console.log("occurrencesInArrays: ", countMatrix);
+      //console.log("occurrencesInArrays: ", countMatrix);
 
       const sumsByRow = countMatrix
         .map((row) => row.slice(0, -1))

@@ -101,12 +101,6 @@ export function DropZone({ data, setData }) {
         error = true;
       }
       if (!regex.test(parsedData.flat())) {
-        console.log(
-          parsedData.flat().every((value) => {
-            if (!/^\d+\.\d{0,2}$/.test(value)) return true;
-            return false;
-          })
-        );
         if (/,,+/.test(parsedData.flat())) {
           setErrors("Error: Found consecutive or end-of-line commas");
         } else if (/(Na|na|nA)/.test(parsedData.flat())) {
@@ -118,7 +112,6 @@ export function DropZone({ data, setData }) {
           })
         ) {
           setErrors("Error: The file contains decimal values");
-          console.log("found a decimal number");
         } else if (
           !parsedData.flat().every((value) => {
             if (!/^-?\d+(\.\d{1,2})?$/.test(value)) return true;
@@ -126,7 +119,6 @@ export function DropZone({ data, setData }) {
           })
         ) {
           setErrors("Error: The file contains negative values");
-          console.log("found a negative number");
         } else {
           setErrors("Error: Invalid characters found");
         }
