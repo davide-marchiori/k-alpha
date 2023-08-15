@@ -22,6 +22,10 @@ export default function Home() {
         options={options}
       />
       <Output data={data} checkedState={checkedState} />
+      <div className="grid justify-items-end m-3">
+        <p></p>
+        <p className="test-sm text-gray-400">v. 1.0</p>
+      </div>
     </main>
   );
 }
