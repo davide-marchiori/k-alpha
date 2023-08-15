@@ -30,7 +30,7 @@ export function Output({ data, checkedState }) {
     if (data.length > 0 && checkedState !== "") {
       // These min and max values use the more reliable reduce function
       // filter((x) => x)) removes all empty values
-      // Does not unse the min and max functions because they are not reliable
+      // Does not use the min and max functions because they are not reliable
       //console.log("data: ", data);
       const minRate = data
         .flat()
