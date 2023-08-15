@@ -175,7 +175,7 @@ export function DropZone({ data, setData }) {
           {isDragReject && "File type not accepted, sorry!"}
           <div className="flex">(Only *.csv will be accepted)</div>
           <div className="flex">
-            Check instructions on how to prepare your datafile
+            Check the Usage Notes on how to prepare your datafile
           </div>
         </div>
       </div>
