@@ -1,13 +1,14 @@
 "use client";
 import { SessionParamsContextProvider } from "@/helpers";
 import { DataTypeSelector, DropZone, Bootstrap, Output } from "@/components";
+import { options } from "@/constants";
 
 export default function Home() {
   return (
     <main className="bg-white p-5">
       <SessionParamsContextProvider>
         <DropZone />
-        <DataTypeSelector />
+        <DataTypeSelector options={options} />
         <Bootstrap />
         <Output />
       </SessionParamsContextProvider>
