@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { SessionParamsContext } from "@/helpers";
 
-export function DataTypeSelector({ options, setCheckedState, checkedState }) {
+export function DataTypeSelector({ options }) {
+  const [, sessionParamsDispatch] = useContext(SessionParamsContext);
+
   const handleOnChange = (e) => {
-    setCheckedState(e.target.value);
+    sessionParamsDispatch({ type: "setCheckedState", value: e.target.value });
   };
 
   return (

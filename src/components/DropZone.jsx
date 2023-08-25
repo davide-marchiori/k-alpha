@@ -1,8 +1,15 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useContext,
+} from "react";
+import { SessionParamsContext } from "@/helpers";
 import { useDropzone } from "react-dropzone";
 import Papa from "papaparse";
 
-const MAX_SIZE = 1048576; // 1MB
+const MAX_SIZE = 102400; // 100 KB
 
 const baseStyle = {
   display: "flex",
@@ -30,7 +37,15 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-export function DropZone({ data, setData }) {
+export function DropZone() {
+  const [bucketSessionParams, sessionParamsDispatch] =
+    useContext(SessionParamsContext);
+  const sessionParams = Object.fromEntries(
+    bucketSessionParams.map((item) => Object.values(item))
+  );
+  // console.log("data", sessionParams.data);
+  // console.log("length of data ", sessionParams.data.length);
+
   const [errors, setErrors] = useState("");
   const [file, setFile] = useState(null);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -129,11 +144,12 @@ export function DropZone({ data, setData }) {
         // If no errors, set data
         // NAs are converted to empty strings; this is to avoid issues with the table:
         // in this way all cells are numbers or empty strings
-        setData(
-          parsedData.map((row) =>
-            row.map((code) => (code === "NA" ? "" : code))
-          )
+        const convertedData = parsedData?.map((row) =>
+          row.map((code) => (code === "NA" ? "" : code))
         );
+        // console.log("parsed data", parsedData);
+        // console.log("converted ddata", convertedData);
+        sessionParamsDispatch({ type: "setData", value: convertedData });
       }
     };
     reader.readAsText(file);
@@ -169,37 +185,41 @@ export function DropZone({ data, setData }) {
       <legend className="text-base">Upload file</legend>
       <div className="mb-3" {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <div className="relative flex flex-col items-center text-gray-900 mt-4">
+        <div className="flex flex-col text-center text-gray-900 mt-4">
           {!isDragActive && "Click here or drop a file to upload!"}
           {isDragActive && !isDragReject && "Drop it here!"}
           {isDragReject && "File type not accepted, sorry!"}
-          <div className="flex">(Only *.csv will be accepted)</div>
-          <div className="flex">
+          <div className="">(Only *.csv will be accepted)</div>
+          <div className="">
             Check the 'Usage Notes' on how to prepare your datafile
           </div>
         </div>
       </div>
       <div>
         {isSuccess
-          ? data &&
-            data[0] && (
+          ? sessionParams.data &&
+            sessionParams.data[0] && (
               <>
                 <p style={{ color: "green" }}>File uploaded successfully!</p>
                 <p>
                   File Name: <b>{file.name}</b>
                 </p>
-                {/* <p>File Size: {file.size} bytes</p>
-            <p>Last Modified: {file.lastModifiedDate.toLocaleString()}</p> */}
                 <p>
-                  Number of coders: <b>{data[0].length}</b>
+                  File Size: <b>{file.size} bytes</b>
                 </p>
                 <p>
-                  Number of coded items: <b>{data.length}</b>
+                  Last Modified: <b>{file.lastModifiedDate.toLocaleString()}</b>
+                </p>
+                <p>
+                  Number of coders: <b>{sessionParams.data[0].length}</b>
+                </p>
+                <p>
+                  Number of coded items: <b>{sessionParams.data.length}</b>
                 </p>
                 <p>
                   NA codes:{" "}
                   <b>
-                    {data.reduce(
+                    {sessionParams.data.reduce(
                       (acc, curr) =>
                         acc +
                         curr.reduce(
@@ -209,7 +229,10 @@ export function DropZone({ data, setData }) {
                       0
                     )}
                   </b>{" "}
-                  out of <b>{data[0].length * data.length}</b>
+                  out of{" "}
+                  <b>
+                    {sessionParams.data[0].length * sessionParams.data.length}
+                  </b>
                 </p>
               </>
             )
