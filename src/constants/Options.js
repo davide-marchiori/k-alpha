@@ -1,4 +1,4 @@
-const options = [
+export const options = [
   {
     name: "nominal",
     label: "Nominal",
@@ -20,5 +20,3 @@ const options = [
     description: "Description of ratio data.",
   },
 ];
-
-export { options };
