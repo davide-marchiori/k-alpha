@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { SessionParamsContext } from "@/helpers";
-import { initialSessionParams } from "@/constants";
+import { initialSessionParams } from "@/constants/initialSessionParams";
 import { quantile } from "d3-array";
 
 export function Output() {

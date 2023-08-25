@@ -1,4 +1,4 @@
-import { initialSessionParams } from "@/constants";
+import { initialSessionParams } from "@/constants/initialSessionParams";
 
 export function sessionParamsReducer(sessionParams, action) {
   switch (action.type) {
