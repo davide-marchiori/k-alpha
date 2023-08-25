@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { SessionParamsContext } from "@/helpers";
-import { options } from "@/constants";
+import { options } from "@/constants/options";
 
 export function DataTypeSelector() {
   const [, sessionParamsDispatch] = useContext(SessionParamsContext);
