@@ -1,2 +1,2 @@
-export * from "../constants/initialSessionParams";
-export * from "../constants/options";
+export * from "./initialSessionParams";
+export * from "./options";
