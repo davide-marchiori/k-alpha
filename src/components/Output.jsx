@@ -275,7 +275,7 @@ export function Output() {
     // Vector of length max - min + 1
     const pie_k = _pie_k(countMatrix, r_bar);
 
-    //console.log("pie_k probabilities: ", pie_k);
+    // console.log("pie_k probabilities: ", pie_k);
     const p_a = _p_a(
       countMatrix,
       r_bar,

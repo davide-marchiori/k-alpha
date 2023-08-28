@@ -153,7 +153,7 @@ export function DropZone() {
           error = true;
         } else {
           // console.log("parsed data", parsedData);
-          console.log("converted saved data", convertedData);
+          // console.log("converted saved data", convertedData);
           sessionParamsDispatch({ type: "setData", value: convertedData });
         }
       }

@@ -14,7 +14,7 @@ export function MenuBootstrapIterations() {
     bucketSessionParams.map((item) => Object.values(item))
   );
   const handleOnClick = (event, iterations) => {
-    console.log(iterations);
+    // console.log(iterations);
     sessionParamsDispatch({ type: "setBootIterations", value: iterations });
   };
 
