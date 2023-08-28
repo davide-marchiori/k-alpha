@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
-import { SessionParamsContext } from "@/helpers";
+import { SessionParamsContext, _minRate, _maxRate } from "@/helpers";
 import { initialSessionParams } from "@/constants/initialSessionParams";
 import { quantile } from "d3-array";
 
@@ -39,25 +39,6 @@ export function Output() {
     },
     [sessionParams.data]
   );
-
-  // These min and max values use the more reliable reduce function
-  // filter((x) => x)) removes all empty values
-  // Does not use the min and max functions because they are not reliable
-  const _minRate = (data) =>
-    data
-      .flat()
-      .filter((x) => x)
-      .reduce(function (p, v) {
-        return p < v ? p : v;
-      });
-
-  const _maxRate = (data) =>
-    data
-      .flat()
-      .filter((x) => x)
-      .reduce(function (p, v) {
-        return p > v ? p : v;
-      });
 
   const _pie_k = useCallback(
     (countMatrix, r_bar) =>

@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useContext,
 } from "react";
-import { SessionParamsContext } from "@/helpers";
+import { SessionParamsContext, _minRate, _maxRate } from "@/helpers";
 import { useDropzone } from "react-dropzone";
 import Papa from "papaparse";
 
@@ -141,15 +141,21 @@ export function DropZone() {
         error = true;
       }
       if (!error) {
-        // If no errors, set data
         // NAs are converted to empty strings; this is to avoid issues with the table:
         // in this way all cells are numbers or empty strings
         const convertedData = parsedData?.map((row) =>
           row.map((code) => (code === "NA" ? "" : code))
         );
-        // console.log("parsed data", parsedData);
-        // console.log("converted ddata", convertedData);
-        sessionParamsDispatch({ type: "setData", value: convertedData });
+        // If no formatting errors, check that min and max values are different
+        if (_minRate(convertedData) === _maxRate(convertedData)) {
+          setErrors("Error: The minimum and maximum values must be different");
+          setIsSuccess(false);
+          error = true;
+        } else {
+          // console.log("parsed data", parsedData);
+          console.log("converted saved data", convertedData);
+          sessionParamsDispatch({ type: "setData", value: convertedData });
+        }
       }
     };
     reader.readAsText(file);
