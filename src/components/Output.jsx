@@ -415,7 +415,7 @@ export function Output() {
             Max rate: <b>{output.maxRate}</b>
           </p>
           <p>
-            Number of items considered: <b>{output.cases}</b>
+            Items with more than one rate: <b>{output.cases}</b>
           </p>
           {
             <p>
