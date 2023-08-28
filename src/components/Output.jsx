@@ -451,7 +451,7 @@ export function Output() {
           )[0].value && (
           <>
             <p>
-              Bootstrap CI:{" "}
+              Bootstrap Confidence Interval (CI):{" "}
               <b>
                 [{output.lower}, {output.upper}]
               </b>
