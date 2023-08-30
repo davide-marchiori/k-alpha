@@ -8,7 +8,7 @@ import {
 export function Bootstrap() {
   return (
     <fieldset className="flex border border-solid border-gray-300 p-3 m-3">
-      <legend className="text-base">Confidence Interval</legend>
+      <legend className="text-base">Confidence Interval (CI)</legend>
       <div className="p-2">
         <MenuCISize />
       </div>
