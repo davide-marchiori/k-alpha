@@ -1,34 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# K-Alpha Calculator: A User-Friendly Tool for Computing Krippendorf’s Alpha
 
-## Getting Started
+## Table of Contents
+1. [Motivation and Significance](#Motivation-and-Significance)
+2. [Software Description](#Software-Description)
+3. [Illustrative Examples](#Illustrative-Examples)
+4. [References](#References)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Motivation and Significance
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Inter-coder reliability serves as a cornerstone of rigorous empirical research, particularly in the social sciences. The K-Alpha Calculator is conceived to address the computational challenges often associated with one of the most widely employed statistical measures for inter-coder reliability: Krippendorff's Alpha. By offering a user-friendly interface to calculate this coefficient, the K-Alpha Calculator aims to contribute to the enhancement of research quality and reliability in the social sciences. For an in-depth review of the theoretical underpinnings of Krippendorff's Alpha and its importance, please refer to our [comprehensive article](https://www.k-alpha.org/article).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Software Description
 
-## Learn More
+The K-Alpha Calculator is hosted at [k-alpha.org](https://www.k-alpha.org/), and its open-source code can be accessed on [GitHub](https://github.com/davide-marchiori/k-alpha).
 
-To learn more about Next.js, take a look at the following resources:
+### How to Use
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application follows a **three-step approach**:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. **Data Upload**: Users must upload a data file in `.csv` format that adheres to specific formatting requirements. 
+   - Rows should represent the items to be coded.
+   - Columns should represent the coders.
+   - File should not contain headers, footers, or labels.
+   - File size must not exceed 1MB.
+   
+2. **Data Type Specification**: After the data file is uploaded, the user must specify the nature of the data from the following options:
+   - Nominal
+   - Ordinal
+   - Interval
+   - Ratio
 
-## Deploy on Vercel
+3. **Result Interpretation**: The calculator processes the uploaded data and outputs the Krippendorff's Alpha value, which reflects the level of agreement among coders.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Data Privacy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The K-Alpha Calculator does not store any data and deletes all data upon the completion of the calculation instance.
+
+---
+
+## Illustrative Examples
+
+### File Format
+
+The data file should be a `.csv` file formatted as follows:
+
+\```
+1,2,1
+1,1,1
+1,2,1
+1,2,2
+1,3,2
+\```
+
+### Handling Missing Values
+
+If a coder did not assign a code to an item, the corresponding cell should be left empty. For instance:
+
+\```
+,2,1
+1,1,1
+1,2,1
+1,2,2
+1,3,2
+\```
+
+---
+
+## References
+
+1. [Krippendorff, K. (2019). Content Analysis: An Introduction to Its Methodology, SAGE Publications](https://doi.org/10.4135/9781071878781)
+2. [LeBreton, J. M., & Senter, J. L. (2008). Answers to 20 questions about interrater reliability and interrater agreement. Organizational research methods, 11(4), 815-852](http://dx.doi.org/10.1177/1094428106296642)
+
+For additional academic resources, please visit [k-alpha.org](https://www.k-alpha.org/).
+
+---
+
+For further inquiries or support, please contact us at [davmar@sam.sdu.dk](mailto:davmar@sam.sdu.dk).
