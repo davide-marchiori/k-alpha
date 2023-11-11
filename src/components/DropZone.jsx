@@ -117,7 +117,7 @@ export function DropZone() {
       }
       if (!regex.test(parsedData.flat())) {
         if (/,,+/.test(parsedData.flat())) {
-          setErrors("Error: Found consecutive or end-of-line commas");
+          setErrors("Error: Found consecutive, or start/end-of-line commas");
         } else if (/(Na|na|nA)/.test(parsedData.flat())) {
           setErrors("Error: Use 'NA' for missing codes (case sensitive)");
         } else if (
