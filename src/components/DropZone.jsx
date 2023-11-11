@@ -116,8 +116,11 @@ export function DropZone() {
         error = true;
       }
       if (!regex.test(parsedData.flat())) {
-        if (/,,+/.test(parsedData.flat())) {
-          setErrors("Error: Found consecutive or start/end-of-line commas");
+        if (parsedData.flat().includes(null)) {
+          console.log("parsed data", parsedData.flat());
+          setErrors(
+            "Error: Found consecutive or start/end-of-line commas - check missing codes policy in the 'Usage Notes'"
+          );
         } else if (/(Na|na|nA)/.test(parsedData.flat())) {
           setErrors("Error: Use 'NA' for missing codes (case sensitive)");
         } else if (
@@ -133,6 +136,7 @@ export function DropZone() {
             return false;
           })
         ) {
+          console.log("parsed data", parsedData.flat());
           setErrors("Error: The file contains negative values");
         } else {
           setErrors("Error: Invalid characters found");
