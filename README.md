@@ -25,14 +25,14 @@ The K-Alpha Calculator is hosted at [k-alpha.org](https://www.k-alpha.org/), it 
 The use of K-Alpha Calculator follows a **three-step approach**:
 
 1. **Data Upload**: Users upload a data file in `.csv` format that adheres to specific formatting requirements. 
- -   *File Type*: The file must be a .csv (Comma-Separated Values) format. **The separator must be a comma (,) not a semicolon (;) or tab.**
+ -   *File Type*: The file must be a .csv (Comma-Separated Values) format. **The separator must be a comma (,) or a semicolon (;). Tab or other separator are not allowed.**
 -   *Layout*: Data should be organized in a matrix format where:
     
     -   Rows represent individual items to be coded.
         
     -   Columns correspond to the coders providing these codes.
         
-    -   **Code values must be represented numerically.**
+    -   **Code values must be represented numerically. Decimals are not allowed**
         
     -   `NA` represents a missing value.
         
@@ -41,7 +41,7 @@ The use of K-Alpha Calculator follows a **three-step approach**:
 2. **Data Type Specification**: After the data file is uploaded, the user specify the nature of the data (Nominal, Ordinal, Interval, Ratio).
 
 3. **Result Interpretation**: The calculator processes the uploaded data and outputs the Krippendorff's Alpha value, which reflects the level of agreement among coders. Confidence Intervals (CI) are also available with bootstrap.
-An acceptable level of reliability should be equal or above `0.80`, as suggested by Krippendorff (2019).
+An acceptable level of reliability should be equal or above `0.80`, as suggested by [Krippendorff (2019)](https://doi.org/10.4135/9781071878781).
 
 ### Data Privacy
 
@@ -82,4 +82,4 @@ For additional resources, please visit [k-alpha.org](https://www.k-alpha.org/).
 
 ---
 
-For further inquiries or support, please contact us at [davmar@sam.sdu.dk](mailto:davmar@sam.sdu.dk).
+For further inquiries or support, please contact [Davide Marchiori](mailto:mrcdvd77@gmail.com).
