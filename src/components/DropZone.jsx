@@ -94,6 +94,7 @@ export function DropZone() {
         skipEmptyLines: true,
         header: false,
         dynamicTyping: true,
+        delimitersToGuess: [",", ";"],
         //transform: (value) => {if (value === "NA") return null; return value},
       });
       const parsedData = csv?.data;
