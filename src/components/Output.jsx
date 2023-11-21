@@ -98,12 +98,14 @@ export function Output() {
                                       Math.min(colIndex, i) +
                                       1) *
                                       (Math.max(colIndex, i) -
-                                        Math.min(colIndex, i))) /
-                                      (countMatrix[rowIndex].slice(0, -1)
-                                        .length *
+                                        Math.min(colIndex, i) +
+                                        2)) /
+                                      ((countMatrix[rowIndex].slice(0, -1)
+                                        .length +
+                                        1) *
                                         (countMatrix[rowIndex].slice(0, -1)
                                           .length -
-                                          1))),
+                                          2))),
                             0
                           ) -
                           1)) /
