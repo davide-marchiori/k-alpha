@@ -95,15 +95,17 @@ export function Output() {
                                   ? 1
                                   : 1 -
                                     ((Math.max(colIndex, i) -
-                                      Math.min(colIndex, i)) *
+                                      Math.min(colIndex, i) +
+                                      1) *
                                       (Math.max(colIndex, i) -
                                         Math.min(colIndex, i) +
-                                        1)) /
-                                      (countMatrix[rowIndex].slice(0, -1)
-                                        .length *
+                                        2)) /
+                                      ((countMatrix[rowIndex].slice(0, -1)
+                                        .length +
+                                        1) *
                                         (countMatrix[rowIndex].slice(0, -1)
                                           .length -
-                                          1))),
+                                          2))),
                             0
                           ) -
                           1)) /
