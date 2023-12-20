@@ -25,7 +25,7 @@ The K-Alpha Calculator is hosted at [k-alpha.org](https://www.k-alpha.org/). It 
 The use of K-Alpha Calculator follows a **three-step approach**:
 
 1. **Data Upload**: Users upload a data file in `.csv` format that meets specific formatting requirements. 
- -   *File Type*: The file must be a .csv (Comma-Separated Values) format. **The separator must be a comma (,) or a semicolon (;). Tab or other separators are not allowed.**
+ -   *File Type*: The file must be a .csv (Comma-Separated Values) format. **The separator must be a comma (,) or a semicolon (;). Tab or other separators are not allowed.** File size limit: 500KB.
 -   *Layout*: Data should be organized in a matrix format where:
     
     -   Rows represent individual items to be rated.
@@ -53,24 +53,23 @@ The K-Alpha Calculator is designed with the highest commitment to ethical data m
 
 ### Data Structure
 
-Consider a scenario with 5 items, 3 raters, and 2 categories represented by the values ‘1’  and ‘2’ (nominal data).​ The data file should comprise 5 rows (one for each item) and 3 columns (one for each rater). The cell values denote the rates assigned. An example representation is as follows:
+Consider a scenario with 5 items, 4 raters, and 3 categories represented by the values ‘1’, ‘2’, ‘3’ (nominal data).​ The data file should comprise 5 rows (one for each item) and 4 columns (one for each rater). The cell values denote the rates assigned. An example representation is as follows:
 
-
-    1,1,1
-    1,1,1
-    1,2,1
-    1,1,1
-    2,2,2
+    1,1,1,1
+    2,2,3,2
+    3,3,3,3
+    3,3,3,3
+    2,2,2,2
 
 ### Missing Values
 
 When a rater has not assigned a rate to an item, the corresponding cell should be marked as ‘NA’ (without quotation marks). For example, if rater 3 did not assign a rate to item 1 and rater 2 did not assign a rate to item 4, the data file should appear as follows:
 
-    1,1,NA
-    1,1,1
-    1,2,1
-    1,NA,1
-    2,2,2
+    1,1,NA,1
+    2,2,3,2
+    3,3,3,3
+    3,NA,3,3
+    2,2,2,2
 
 ---
 
