@@ -1,4 +1,4 @@
-# K-Alpha Calculator: A User-Friendly Tool for Computing Krippendorf’s Alpha
+# K-Alpha Calculator —Krippendorff's Alpha Calculator: A User-Friendly Tool for Computing Krippendorf's Alpha Inter-Rater Reliability Coefficient
 
 ## Table of Contents
 1. [Introduction](#Introduction)
@@ -10,21 +10,20 @@
 
 ## Introduction
 
-Inter-rater reliability serves as a cornerstone of rigorous empirical research in different research contexts and domains. The K-Alpha Calculator, *Krippendorff's Alpha Calculator*,  is designed to simplify the computation of Krippendorff’s Alpha, one of the most widely employed statistical measures for inter-rater reliability (Krippendorff, 2019).
-By providing a free tool with a user-friendly interface for calculating this coefficient, the K-Alpha Calculator aims to enhance research quality and reliability by offering an accessible and standalone tool for user.
+
 For an in-depth review of the theoretical and mathematical underpinnings of Krippendorff's Alpha, please refer to [Krippendorff (2019)](https://doi.org/10.4135/9781071878781). For a detailed overview of The K-Alpha Calculator please refer to our [academic article](https://www.k-alpha.org/article).
 
 ---
 
 ## Software Description
 
-The K-Alpha Calculator is hosted at [k-alpha.org](https://www.k-alpha.org/), it is completely free, and its open-source code can be accessed here on [GitHub](https://github.com/davide-marchiori/k-alpha). The code behind the K-Alpha Calculator performs the calculation steps following the procedure on [Krippendorff (2019)](https://doi.org/10.4135/9781071878781). It also incorporates the adjustments and considerations outlined in the bootstrapping method as described by [Hayes and Krippendorff (2007)](https://doi.org/10.1080/19312450709336664).
+The K-Alpha Calculator is hosted at [k-alpha.org](https://www.k-alpha.org/). It is completely free, and its source code can be accessed here on [GitHub](https://github.com/davide-marchiori/k-alpha). The code behind the K-Alpha Calculator performs the calculation steps following the procedure on [Krippendorff (2019)](https://doi.org/10.4135/9781071878781). It also incorporates the adjustments and considerations outlined in the bootstrapping method as described by [Hayes and Krippendorff (2007)](https://doi.org/10.1080/19312450709336664).
 
 ### How to Use
 
 The use of K-Alpha Calculator follows a **three-step approach**:
 
-1. **Data Upload**: Users upload a data file in `.csv` format that adheres to specific formatting requirements. 
+1. **Data Upload**: Users upload a data file in `.csv` format that meets specific formatting requirements. 
  -   *File Type*: The file must be a .csv (Comma-Separated Values) format. **The separator must be a comma (,) or a semicolon (;). Tab or other separators are not allowed.**
 -   *Layout*: Data should be organized in a matrix format where:
     
@@ -36,16 +35,15 @@ The use of K-Alpha Calculator follows a **three-step approach**:
         
     -   `NA` represents a missing value.
         
--   *Content*: Each cell within this matrix should contain the rate assigned by a rater to a specific item. Data should be [nominal, ordinal, interval, or ratio.](https://en.wikipedia.org/wiki/Level_of_measurement)
-   
-2. **Data Type Specification**: After the data file is uploaded, the user specify the nature of the data (Nominal, Ordinal, Interval, Ratio).
 
-3. **Result Interpretation**: K-Alpha Calculator processes the uploaded data and outputs the Krippendorff's Alpha value, which reflects the level of agreement among raters. Confidence Intervals (CI) are also available with bootstrap.
-An acceptable level of reliability should be equal or above `0.80`, as suggested by [Krippendorff (2019)](https://doi.org/10.4135/9781071878781).
+   
+2. **Data Type Specification**: After the data file is uploaded, the user specifies the nature of the data (Nominal, Ordinal, Interval, Ratio).
+
+
 
 ### Data Privacy
 
-The K-Alpha Calculator does not store any data and deletes all data upon the completion of the calculation instance.
+The K-Alpha Calculator is designed with the highest commitment to ethical data management and user privacy. It ensures that all data input by users remains exclusively within their own domain, as it operates entirely on the client side. This means the K-Alpha Calculator functions solely within the user's browser environment, without retaining, storing, or transmitting any data to external servers or storage systems.
 
 ---
 
@@ -85,4 +83,4 @@ For additional resources, please visit [k-alpha.org](https://www.k-alpha.org/).
 
 ---
 
-For further inquiries or support, please contact Davide Marchiori(mailto:mrcdvd77@gmail.com).
+

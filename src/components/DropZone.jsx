@@ -101,13 +101,13 @@ export function DropZone() {
       let error = false;
       if (!parsedData.every((row) => row.length === parsedData[0].length)) {
         setErrors(
-          "Error: Items must be evaluated by the same number of coders; check for missing codes, or redundant commas"
+          "Error: Items must be evaluated by the same number of raters; check for missing codes, or redundant commas"
         );
         setIsSuccess(false);
         error = true;
       }
       if (parsedData[0].length < 2) {
-        setErrors("Error: There must be at least 2 coders");
+        setErrors("Error: There must be at least 2 raters");
         setIsSuccess(false);
         error = true;
       }
@@ -193,11 +193,13 @@ export function DropZone() {
 
   return (
     <fieldset className="border border-solid border-gray-300 p-3 m-3">
-      <legend className="text-base">Upload file</legend>
-      <div className="mb-3" {...getRootProps({ style })}>
+      <legend className="text-base">
+        <b>Upload file</b>
+      </legend>
+      <div className="m-3" {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <div className="flex flex-col text-center text-gray-900 mt-4">
-          {!isDragActive && "Click here or drop a file to upload!"}
+        <div className="flex flex-col text-center text-gray-900 m-3">
+          {!isDragActive && "Click here or drop a file to upload"}
           {isDragActive && !isDragReject && "Drop it here!"}
           {isDragReject && "File type not accepted, sorry!"}
           <div className="">(Only *.csv will be accepted)</div>
@@ -210,8 +212,8 @@ export function DropZone() {
         {isSuccess
           ? sessionParams.data &&
             sessionParams.data[0] && (
-              <>
-                <p style={{ color: "green" }}>File uploaded successfully!</p>
+              <div className="m-3">
+                <p style={{ color: "green" }}>File uploaded successfully</p>
                 <p>
                   File Name: <b>{file.name}</b>
                 </p>
@@ -222,13 +224,13 @@ export function DropZone() {
                   Last Modified: <b>{file.lastModifiedDate.toLocaleString()}</b>
                 </p>
                 <p>
-                  Number of coders: <b>{sessionParams.data[0].length}</b>
+                  Number of raters: <b>{sessionParams.data[0].length}</b>
                 </p>
                 <p>
-                  Number of coded items: <b>{sessionParams.data.length}</b>
+                  Number of rated items: <b>{sessionParams.data.length}</b>
                 </p>
                 <p>
-                  NA codes:{" "}
+                  Missing values (NA inputs):{" "}
                   <b>
                     {sessionParams.data.reduce(
                       (acc, curr) =>
@@ -245,7 +247,7 @@ export function DropZone() {
                     {sessionParams.data[0].length * sessionParams.data.length}
                   </b>
                 </p>
-              </>
+              </div>
             )
           : isVisible && <span style={{ color: "red" }}>{errors}</span>}
       </div>
