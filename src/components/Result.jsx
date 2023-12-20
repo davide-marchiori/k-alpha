@@ -373,7 +373,7 @@ export function Result() {
                 Number of pairable rates: <b>{output.pairableRates}</b>
               </p>
               <p className="mt-3">
-                Krippendorff's-alpha ({sessionParams.checkedState} scale):{" "}
+                Krippendorff's Alpha ({sessionParams.checkedState} scale):{" "}
                 <b>{output.k_alpha}</b>
               </p>
             </div>
