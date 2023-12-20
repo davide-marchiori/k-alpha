@@ -10,8 +10,7 @@
 
 ## Introduction
 
-Inter-rater reliability is a cornerstone of rigorous empirical research in different contexts and domains. The K-Alpha Calculator, *Krippendorff's Alpha Calculator*,  is designed to simplify the computation of Krippendorff’s Alpha, one of the most widely employed statistical measures for inter-rater reliability (Krippendorff, 2019).
-By providing a free tool with a user-friendly interface for calculating this coefficient, the K-Alpha Calculator aims to enhance research quality and reliability by offering an accessible and standalone tool for users.
+
 For an in-depth review of the theoretical and mathematical underpinnings of Krippendorff's Alpha, please refer to [Krippendorff (2019)](https://doi.org/10.4135/9781071878781). For a detailed overview of The K-Alpha Calculator please refer to our [academic article](https://www.k-alpha.org/article).
 
 ---
@@ -36,12 +35,11 @@ The use of K-Alpha Calculator follows a **three-step approach**:
         
     -   `NA` represents a missing value.
         
--   *Content*: Each cell within this matrix should contain the rate a rater assigns to a specific item. Data should be [nominal, ordinal, interval, or ratio.](https://en.wikipedia.org/wiki/Level_of_measurement)
+
    
 2. **Data Type Specification**: After the data file is uploaded, the user specifies the nature of the data (Nominal, Ordinal, Interval, Ratio).
 
-3. **Result Interpretation**: K-Alpha Calculator processes the uploaded data and outputs Krippendorff's Alpha value, reflecting the agreement level among raters. Confidence Intervals (CI) are also available with bootstrap.
-An acceptable level of reliability should be equal to or above `0.80`, as suggested by [Krippendorff (2019)](https://doi.org/10.4135/9781071878781).
+
 
 ### Data Privacy
 
@@ -85,4 +83,4 @@ For additional resources, please visit [k-alpha.org](https://www.k-alpha.org/).
 
 ---
 
-For further inquiries or support, please contact us at [davmar@sam.sdu.dk](mailto:davmar@sam.sdu.dk).
+
