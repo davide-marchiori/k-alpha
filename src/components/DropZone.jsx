@@ -194,14 +194,14 @@ export function DropZone() {
   return (
     <fieldset className="border border-solid border-gray-300 p-3 m-3">
       <legend className="text-base">
-        <b>Upload file</b>
+        <b>Upload File</b>
       </legend>
       <div className="m-3" {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <div className="flex flex-col text-center text-gray-900 m-3">
           {!isDragActive && "Click here or drop a file to upload"}
-          {isDragActive && !isDragReject && "Drop it here!"}
-          {isDragReject && "File type not accepted, sorry!"}
+          {isDragActive && !isDragReject && "Drop it here"}
+          {isDragReject && "File type not accepted"}
           <div className="">(Only *.csv will be accepted)</div>
           <div className="">
             Check the 'Usage Notes' on how to prepare your datafile
@@ -224,13 +224,13 @@ export function DropZone() {
                   Last Modified: <b>{file.lastModifiedDate.toLocaleString()}</b>
                 </p>
                 <p>
-                  Number of raters: <b>{sessionParams.data[0].length}</b>
+                  Number of Raters: <b>{sessionParams.data[0].length}</b>
                 </p>
                 <p>
-                  Number of rated items: <b>{sessionParams.data.length}</b>
+                  Number of Rated Items: <b>{sessionParams.data.length}</b>
                 </p>
                 <p>
-                  Missing values (NA inputs):{" "}
+                  Missing Values (NA Rates):{" "}
                   <b>
                     {sessionParams.data.reduce(
                       (acc, curr) =>

@@ -350,31 +350,33 @@ export function Result() {
         <b>Result</b>
       </legend>
       {sessionParams.data.length === 0 && (
-        <div className="m-3 text-red-600">&#8594; Upload a datafile</div>
+        <div className="m-3 text-red-600">&#8594; Upload a Data File</div>
       )}
       {sessionParams.checkedState === "" && (
-        <div className="m-3 text-red-600">&#8594; Select the type of data</div>
+        <div className="m-3 text-red-600">&#8594; Select the Type of Data</div>
       )}
       {sessionParams.data.length > 0 && sessionParams.checkedState !== "" && (
         <div className="m-3">
           <p>
-            Min rate: <b>{output.minRate}</b>
+            Min Rate: <b>{output.minRate}</b>
           </p>
           <p>
-            Max rate: <b>{output.maxRate}</b>
+            Max Rate: <b>{output.maxRate}</b>
           </p>
           <p>
-            Items with more than one rate: <b>{output.cases}</b>
+            Items With More Than One Rate: <b>{output.cases}</b>
           </p>
 
           {
             <div>
               <p>
-                Number of pairable rates: <b>{output.pairableRates}</b>
+                Number of Pairable Rates: <b>{output.pairableRates}</b>
               </p>
               <p className="mt-3 text-lg">
-                Krippendorff's Alpha ({sessionParams.checkedState} scale):{" "}
-                <b>{output.k_alpha}</b>
+                Krippendorff's Alpha (
+                {sessionParams.checkedState.charAt(0).toUpperCase() +
+                  sessionParams.checkedState.slice(1)}{" "}
+                Scale): <b>{output.k_alpha}</b>
               </p>
             </div>
           }
@@ -392,7 +394,7 @@ export function Result() {
             (item) => item.name === "bootIterations"
           )[0].value) && (
         <div className="m-3 text-red-600">
-          &#8594; Set the bootstrap CI parameters
+          &#8594; Set the Bootstrap CI Parameters
         </div>
       )}
       {sessionParams.data.length > 0 &&
