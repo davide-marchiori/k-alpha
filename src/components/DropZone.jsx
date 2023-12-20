@@ -230,7 +230,7 @@ export function DropZone() {
                   Number of Rated Items: <b>{sessionParams.data.length}</b>
                 </p>
                 <p>
-                  Missing Values (NA Rates):{" "}
+                  Missing Values (NAs):{" "}
                   <b>
                     {sessionParams.data.reduce(
                       (acc, curr) =>
