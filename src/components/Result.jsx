@@ -39,7 +39,7 @@ export function Result() {
     [sessionParams.data]
   );
 
-  const _d0 = useCallback(
+  const _computeAlpha = useCallback(
     (VbyUMatrix, checkedState) => {
       const sumsByCol = VbyUMatrix.reduce((acc, curr) =>
         acc.map((num, i) => num + curr[i])
@@ -229,7 +229,7 @@ export function Result() {
     const maxRate = _maxRate(data);
     const countMatrix = countOccurrencesInRange(data, minRate, maxRate);
     const VbyUMatrix = countMatrix.map((row) => row.slice(0, -1)); // Values x Units matrix
-    const result = _d0(VbyUMatrix, sessionParams.checkedState);
+    const result = _computeAlpha(VbyUMatrix, sessionParams.checkedState);
     return [
       countMatrix.length,
       result.toFixed(3),
@@ -373,7 +373,7 @@ export function Result() {
                 Number of pairable rates: <b>{output.pairableRates}</b>
               </p>
               <p className="mt-3">
-                Krippendorf's-alpha ({sessionParams.checkedState} scale):{" "}
+                Krippendorff's-alpha ({sessionParams.checkedState} scale):{" "}
                 <b>{output.k_alpha}</b>
               </p>
             </div>
