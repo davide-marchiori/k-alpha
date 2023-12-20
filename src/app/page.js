@@ -1,6 +1,6 @@
 "use client";
 import { SessionParamsContextProvider } from "@/helpers";
-import { DataTypeSelector, DropZone, Bootstrap, Output } from "@/components";
+import { DataTypeSelector, DropZone, Bootstrap, Result } from "@/components";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
         <DropZone />
         <DataTypeSelector />
         <Bootstrap />
-        <Output />
+        <Result />
       </SessionParamsContextProvider>
       <div className="grid justify-items-end m-3">
         <p></p>

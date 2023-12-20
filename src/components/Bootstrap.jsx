@@ -8,17 +8,17 @@ import {
 export function Bootstrap() {
   return (
     <fieldset className="flex border border-solid border-gray-300 p-3 m-3">
-      <legend className="text-base">Confidence Interval (CI)</legend>
-      <div className="p-2">
-        <MenuCISize />
+      <legend className="text-base">
+        <b>Confidence Interval (CI)</b>
+      </legend>
+      <div className="m-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-5">
+        <div>
+          <MenuCISize />
+        </div>
+        <div>
+          <MenuBootstrapIterations />
+        </div>
       </div>
-      {/* <div className="p-2">
-        <MenuBootstrapSampleSize />
-      </div> */}
-      <div className="p-2">
-        <MenuBootstrapIterations />
-      </div>
-      <div className="space-y-5"></div>
     </fieldset>
   );
 }

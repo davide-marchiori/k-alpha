@@ -33,8 +33,10 @@ export function DataTypeSelector() {
 
   return (
     <fieldset className="border border-solid border-gray-300 p-3 m-3">
-      <legend className="text-base">Type of Data</legend>
-      <div className="space-y-5">
+      <legend className="text-base">
+        <b>Type of Data</b>
+      </legend>
+      <div className="m-3 grid grid-cols-1 gap-5 sm:grid-cols-4 sm:gap-5 lg:grid-cols-6 xl:grid-cols-10">
         {options.map((option, index) => (
           <div key={index} className="relative flex items-start">
             <div className="flex h-6 items-center">
