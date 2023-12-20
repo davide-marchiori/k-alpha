@@ -9,7 +9,7 @@ import { SessionParamsContext, _minRate, _maxRate } from "@/helpers";
 import { useDropzone } from "react-dropzone";
 import Papa from "papaparse";
 
-const MAX_SIZE = 102400; // 100 KB
+const MAX_SIZE = 5 * 102400; // 500 KB
 
 const baseStyle = {
   display: "flex",
