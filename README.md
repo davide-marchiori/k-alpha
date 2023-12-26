@@ -1,4 +1,4 @@
-# K-Alpha Calculator —Krippendorff's Alpha Calculator: A User-Friendly Tool for Computing Krippendorf's Alpha Inter-Rater Reliability Coefficient
+# K-Alpha Calculator —Krippendorff's Alpha Calculator: A User-Friendly Tool for Computing Krippendorff's Alpha Inter-Rater Reliability Coefficient
 
 ## Table of Contents
 1. [Introduction](#Introduction)
@@ -25,16 +25,16 @@ The K-Alpha Calculator is hosted at [k-alpha.org](https://www.k-alpha.org/). It 
 The use of K-Alpha Calculator follows a **three-step approach**:
 
 1. **Data Upload**: Users upload a data file in `.csv` format that meets specific formatting requirements. 
- -   *File Type*: The file must be a .csv (Comma-Separated Values) format. **The separator must be a comma (,) or a semicolon (;). Tab or other separators are not allowed.** File size limit: 500KB.
+ -   *File Type*: The file must be in a .csv (Comma-Separated Values) format. **The separator must be a comma (,) or a semicolon (;). Tab or other separators are not allowed.** File size limit: 500KB.
 -   *Layout*: Data should be organized in a matrix format where:
     
     -   Rows represent individual items to be rated.
         
     -   Columns correspond to the raters providing these rates.
         
-    -   **Rate values must be represented numerically. Decimals are not allowed**
+    -   **Rate values must be represented numerically. Decimals are not allowed.**
         
-    -   `NA` represents a missing value.
+    -   `NA` represents a missing value. **Empty cells are not allowed.**
         
 -   *Content*: Each cell within this matrix should contain the rate a rater assigns to a specific item. Data should be [nominal, ordinal, interval, or ratio.](https://en.wikipedia.org/wiki/Level_of_measurement)
    
@@ -45,7 +45,7 @@ An acceptable level of reliability should be equal to or above `0.80`, as sugges
 
 ### Data Privacy
 
-The K-Alpha Calculator is designed with the highest commitment to ethical data management and user privacy. It ensures that all data input by users remains exclusively within their own domain, as it operates entirely on the client side. This means the K-Alpha Calculator functions solely within the user's browser environment, without retaining, storing, or transmitting any data to external servers or storage systems.
+As the authors and maintainers of the K-Alpha Calculator, we are committed to preserving high standards of ethical conduct in data management and user privacy. We assure users that all data input into the K-Alpha Calculator remains exclusively within the user's domain, as the calculator operates entirely on the client side. This means it functions solely within the user's browser environment, guaranteeing that no data is retained, stored, or transmitted to external servers or storage systems. 
 
 ---
 
