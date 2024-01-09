@@ -12,13 +12,13 @@
 
 Inter-rater reliability is a cornerstone of rigorous empirical research in different contexts and domains. The K-Alpha Calculator, *Krippendorff's Alpha Calculator*,  is designed to simplify the computation of Krippendorff’s Alpha, one of the most widely employed statistical measures for inter-rater reliability (Krippendorff, 2019).
 By providing a free tool with a user-friendly interface for calculating this coefficient, the K-Alpha Calculator aims to enhance research quality and reliability by offering an accessible and standalone tool for users.
-For an in-depth review of the theoretical and mathematical underpinnings of Krippendorff's Alpha, please refer to [Krippendorff (2019)](https://doi.org/10.4135/9781071878781). For a detailed overview of The K-Alpha Calculator please refer to our [academic article](https://www.k-alpha.org/article).
+For an in-depth review of the theoretical and mathematical underpinnings of Krippendorff's Alpha, please refer to [Krippendorff (2019)](https://doi.org/10.4135/9781071878781). For a detailed overview of The K-Alpha Calculator please refer to our academic article, [Marzi et al. (2024)](https://doi.org/10.1016/j.mex.2023.102545).
 
 ---
 
 ## Software Description
 
-The K-Alpha Calculator is hosted at [k-alpha.org](https://www.k-alpha.org/). It is completely free, and its source code can be accessed here on [GitHub](https://github.com/davide-marchiori/k-alpha). The code behind the K-Alpha Calculator performs the calculation steps following the procedure on [Krippendorff (2019)](https://doi.org/10.4135/9781071878781). It also incorporates the adjustments and considerations outlined in the bootstrapping method as described by [Hayes and Krippendorff (2007)](https://doi.org/10.1080/19312450709336664).
+The K-Alpha Calculator is hosted at [k-alpha.org](https://www.k-alpha.org/). It is completely free, and its source code can be accessed here on [GitHub](https://github.com/davide-marchiori/k-alpha). The code behind the K-Alpha Calculator performs the calculation steps following the procedure on [Krippendorff (2019)](https://doi.org/10.4135/9781071878781), discussed in  [Marzi et al. (2024)](https://doi.org/10.1016/j.mex.2023.102545).
 
 ### How to Use
 
@@ -75,17 +75,13 @@ When a rater has not assigned a rate to an item, the corresponding cell should b
 
 ## References
 
-Hayes, A. F., & Krippendorff, K. (2007). Answering the call for a standard reliability measure for coding data. *Communication methods and measures*, 1(1), 77-89. https://doi.org/10.1080/19312450709336664
-
 Krippendorff, K. (2019). *Content Analysis: An Introduction to Its Methodology* (4th ed.), SAGE Publications https://doi.org/10.4135/9781071878781
+
+Marzi, G., Balzano, M., & Marchiori, D. (2024). K-Alpha Calculator —Krippendorff's Alpha Calculator: A User-Friendly Tool for Computing Krippendorff's Alpha Inter-Rater Reliability Coefficient. *MethodsX*, 102545. https://doi.org/10.1016/j.mex.2023.102545](https://doi.org/10.1016/j.mex.2023.102545)
 
 
 For additional resources, please visit [k-alpha.org](https://www.k-alpha.org/).
 
 ---
 
-For further inquiries or support, please contact [Davide Marchiori](mailto:mrcdvd77@gmail.com).
-
-
-
-
+For further inquiries or support, please contact [Davide Marchiori](mailto:davide.marchiori@imtlucca.it).
