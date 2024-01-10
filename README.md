@@ -77,7 +77,7 @@ When a rater has not assigned a rate to an item, the corresponding cell should b
 
 Krippendorff, K. (2019). *Content Analysis: An Introduction to Its Methodology* (4th ed.), SAGE Publications https://doi.org/10.4135/9781071878781
 
-Marzi, G., Balzano, M., & Marchiori, D. (2024). K-Alpha Calculator —Krippendorff's Alpha Calculator: A User-Friendly Tool for Computing Krippendorff's Alpha Inter-Rater Reliability Coefficient. *MethodsX*, 102545. [https://doi.org/10.1016/j.mex.2023.102545](https://doi.org/10.1016/j.mex.2023.102545)
+Marzi, G., Balzano, M., & Marchiori, D. (2024). K-Alpha Calculator —Krippendorff's Alpha Calculator: A User-Friendly Tool for Computing Krippendorff's Alpha Inter-Rater Reliability Coefficient. *MethodsX*, *12*, 102545. [https://doi.org/10.1016/j.mex.2023.102545](https://doi.org/10.1016/j.mex.2023.102545)
 
 
 For additional resources, please visit [k-alpha.org](https://www.k-alpha.org/).
@@ -85,3 +85,7 @@ For additional resources, please visit [k-alpha.org](https://www.k-alpha.org/).
 ---
 
 For further inquiries or support, please contact [Davide Marchiori](mailto:davide.marchiori@imtlucca.it)
+
+
+
+
