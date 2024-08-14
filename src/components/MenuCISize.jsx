@@ -13,7 +13,7 @@ export function MenuCISize() {
   const sessionParams = Object.fromEntries(
     bucketSessionParams.map((item) => Object.values(item))
   );
-  const handleOnClick = (event, CI) => {
+  const handleOnClick = (CI) => {
     // console.log(CI);
     sessionParamsDispatch({ type: "setCISize", value: CI });
   };
@@ -54,7 +54,7 @@ export function MenuCISize() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "90% CI")}
+                  onClick={() => handleOnClick("90% CI")}
                 >
                   90% Confidence Interval
                 </a>
@@ -68,7 +68,7 @@ export function MenuCISize() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "95% CI")}
+                  onClick={() => handleOnClick("95% CI")}
                 >
                   95% Confidence Interval
                 </a>
@@ -82,7 +82,7 @@ export function MenuCISize() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "99% CI")}
+                  onClick={() => handleOnClick("99% CI")}
                 >
                   99% Confidence Interval
                 </a>

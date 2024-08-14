@@ -13,7 +13,7 @@ export function MenuBootstrapSampleSize() {
   const sessionParams = Object.fromEntries(
     bucketSessionParams.map((item) => Object.values(item))
   );
-  const handleOnClick = (event, percent) => {
+  const handleOnClick = (percent) => {
     // console.log(percent);
     sessionParamsDispatch({ type: "setBootSampleSize", value: percent });
   };
@@ -54,7 +54,7 @@ export function MenuBootstrapSampleSize() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "40% of Data Set")}
+                  onClick={() => handleOnClick("40% of Data Set")}
                 >
                   40% of Data Set
                 </a>
@@ -68,7 +68,7 @@ export function MenuBootstrapSampleSize() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "60% of Data Set")}
+                  onClick={() => handleOnClick("60% of Data Set")}
                 >
                   60% of Data Set
                 </a>
@@ -82,7 +82,7 @@ export function MenuBootstrapSampleSize() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "80% of Data Set")}
+                  onClick={() => handleOnClick("80% of Data Set")}
                 >
                   80% of Data Set
                 </a>
@@ -96,7 +96,7 @@ export function MenuBootstrapSampleSize() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "100% of Data Set")}
+                  onClick={() => handleOnClick("100% of Data Set")}
                 >
                   100% of Data Set
                 </a>

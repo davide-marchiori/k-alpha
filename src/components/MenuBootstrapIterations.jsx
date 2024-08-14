@@ -13,7 +13,7 @@ export function MenuBootstrapIterations() {
   const sessionParams = Object.fromEntries(
     bucketSessionParams.map((item) => Object.values(item))
   );
-  const handleOnClick = (event, iterations) => {
+  const handleOnClick = (iterations) => {
     // console.log(iterations);
     sessionParamsDispatch({ type: "setBootIterations", value: iterations });
   };
@@ -54,7 +54,7 @@ export function MenuBootstrapIterations() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "200 Iterations")}
+                  onClick={() => handleOnClick("200 Iterations")}
                 >
                   200 Iterations
                 </a>
@@ -68,7 +68,7 @@ export function MenuBootstrapIterations() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "400 Iterations")}
+                  onClick={() => handleOnClick("400 Iterations")}
                 >
                   400 Iterations
                 </a>
@@ -82,7 +82,7 @@ export function MenuBootstrapIterations() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "600 Iterations")}
+                  onClick={() => handleOnClick("600 Iterations")}
                 >
                   600 Iterations
                 </a>
@@ -96,7 +96,7 @@ export function MenuBootstrapIterations() {
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
-                  onClick={(e) => handleOnClick(e, "1000 Iterations")}
+                  onClick={() => handleOnClick("1000 Iterations")}
                 >
                   1000 Iterations
                 </a>
