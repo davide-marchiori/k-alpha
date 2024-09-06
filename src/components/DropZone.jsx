@@ -198,7 +198,6 @@ export function DropZone() {
     onDrop: processFile,
     accept: {
       "text/csv": [".csv"],
-      "application/vnd.ms-excel": [".csv"], // Some systems may use this MIME type for CSV
     },
     maxSize: MAX_SIZE,
   });
