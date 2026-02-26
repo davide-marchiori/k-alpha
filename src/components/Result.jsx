@@ -6,7 +6,7 @@ import { quantile } from "d3-array";
 export function Result() {
   const [bucketSessionParams] = useContext(SessionParamsContext);
   const sessionParams = Object.fromEntries(
-    bucketSessionParams.map((item) => Object.values(item))
+    bucketSessionParams.map((item) => Object.values(item)),
   );
   const [output, setOutput] = useState({});
 
@@ -36,18 +36,25 @@ export function Result() {
           return sum > 1;
         });
     },
-    [sessionParams.data]
+    [sessionParams.data],
   );
 
   const _computeAlpha = useCallback(
     (VbyUMatrix, checkedState) => {
+      if (!Array.isArray(VbyUMatrix) || VbyUMatrix.length === 0) return NaN;
+      if (!Array.isArray(VbyUMatrix[0]) || VbyUMatrix[0].length === 0)
+        return NaN;
+      const k = VbyUMatrix[0].length;
+      if (!VbyUMatrix.every((r) => Array.isArray(r) && r.length === k))
+        return NaN;
+
       const sumsByCol = VbyUMatrix.reduce((acc, curr) =>
-        acc.map((num, i) => num + curr[i])
+        acc.map((num, i) => num + curr[i]),
       );
       const sumsByRow = VbyUMatrix.map((row) => row.reduce((a, b) => a + b, 0));
       const totRates = VbyUMatrix.flat().reduce((sum, num) => sum + num, 0);
 
-      let numerator, denominator;
+      let numerator, denominator, denom;
 
       switch (checkedState) {
         case "nominal":
@@ -65,7 +72,7 @@ export function Result() {
                   }, 0)
                 );
               })
-              .reduce((total, current) => total + current, 0)
+              .reduce((total, current) => total + current, 0),
           ).map((value, index) => value / (sumsByRow[index] - 1));
 
           denominator = sumsByCol.map((value, colIndex) => {
@@ -76,15 +83,15 @@ export function Result() {
                 .reduce(
                   (total, current, idx) =>
                     total + current * (colIndex !== colIndex + idx + 1 ? 1 : 0),
-                  0
+                  0,
                 )
             );
           });
 
+          denom = denominator.reduce((a, b) => a + b, 0);
+          if (!Number.isFinite(denom) || denom === 0) return NaN;
           return (
-            1 -
-            ((totRates - 1) * numerator.reduce((a, b) => a + b, 0)) /
-              denominator.reduce((a, b) => a + b, 0)
+            1 - ((totRates - 1) * numerator.reduce((a, b) => a + b, 0)) / denom
           );
 
         case "ordinal":
@@ -105,13 +112,13 @@ export function Result() {
                             (sumsByCol[colIndex] +
                               sumsByCol[colIndex + idx + 1]) /
                               2,
-                          2
+                          2,
                         )
                     );
                   }, 0)
                 );
               })
-              .reduce((total, current) => total + current, 0)
+              .reduce((total, current) => total + current, 0),
           ).map((value, index) => value / (sumsByRow[index] - 1));
 
           denominator = sumsByCol.map((value, colIndex) => {
@@ -130,17 +137,17 @@ export function Result() {
                           (sumsByCol[colIndex] +
                             sumsByCol[colIndex + idx + 1]) /
                             2,
-                        2
+                        2,
                       ),
-                  0
+                  0,
                 )
             );
           });
 
+          denom = denominator.reduce((a, b) => a + b, 0);
+          if (!Number.isFinite(denom) || denom === 0) return NaN;
           return (
-            1 -
-            ((totRates - 1) * numerator.reduce((a, b) => a + b, 0)) /
-              denominator.reduce((a, b) => a + b, 0)
+            1 - ((totRates - 1) * numerator.reduce((a, b) => a + b, 0)) / denom
           );
 
         case "interval":
@@ -155,7 +162,7 @@ export function Result() {
                   }, 0)
                 );
               })
-              .reduce((total, current) => total + current, 0)
+              .reduce((total, current) => total + current, 0),
           ).map((value, index) => value / (sumsByRow[index] - 1));
 
           denominator = sumsByCol.map((value, colIndex) => {
@@ -166,15 +173,15 @@ export function Result() {
                 .reduce(
                   (total, current, idx) =>
                     total + current * Math.pow(idx + 1, 2),
-                  0
+                  0,
                 )
             );
           });
 
+          denom = denominator.reduce((a, b) => a + b, 0);
+          if (!Number.isFinite(denom) || denom === 0) return NaN;
           return (
-            1 -
-            ((totRates - 1) * numerator.reduce((a, b) => a + b, 0)) /
-              denominator.reduce((a, b) => a + b, 0)
+            1 - ((totRates - 1) * numerator.reduce((a, b) => a + b, 0)) / denom
           );
 
         case "ratio":
@@ -193,7 +200,7 @@ export function Result() {
                   }, 0)
                 );
               })
-              .reduce((total, current) => total + current, 0)
+              .reduce((total, current) => total + current, 0),
           ).map((value, index) => value / (sumsByRow[index] - 1));
 
           denominator = sumsByCol.map((value, colIndex) => {
@@ -206,33 +213,38 @@ export function Result() {
                     total +
                     current *
                       Math.pow((idx + 1) / (colIndex + colIndex + idx + 3), 2),
-                  0
+                  0,
                 )
             );
           });
 
+          denom = denominator.reduce((a, b) => a + b, 0);
+          if (!Number.isFinite(denom) || denom === 0) return NaN;
           return (
-            1 -
-            ((totRates - 1) * numerator.reduce((a, b) => a + b, 0)) /
-              denominator.reduce((a, b) => a + b, 0)
+            1 - ((totRates - 1) * numerator.reduce((a, b) => a + b, 0)) / denom
           );
 
         default:
           break;
       }
     },
-    [sessionParams.data]
+    [sessionParams.data],
   );
 
   const _k_alpha = (data) => {
+    if (data.length === 0) return [0, NaN, 0];
     const minRate = _minRate(data);
     const maxRate = _maxRate(data);
     const countMatrix = countOccurrencesInRange(data, minRate, maxRate);
-    const VbyUMatrix = countMatrix.map((row) => row.slice(0, -1)); // Values x Units matrix
+    if (countMatrix.length === 0) return [0, NaN, 0];
+    const VbyUMatrix = countMatrix.map((row) => row.slice(0, -1));
+    const sumsByColCheck = VbyUMatrix[0]?.length ?? 0;
+    if (sumsByColCheck === 0) return [0, NaN, 0];
     const result = _computeAlpha(VbyUMatrix, sessionParams.checkedState);
+    const safeResult = Number.isFinite(result) ? result.toFixed(3) : "N/A";
     return [
       countMatrix.length,
-      result.toFixed(3),
+      safeResult,
       VbyUMatrix.flat().reduce((sum, num) => sum + num, 0),
     ];
   };
@@ -253,93 +265,119 @@ export function Result() {
       default:
         break;
     }
+    const sorted = copy.sort((a, b) => a - b);
+    const lo = quantile(sorted, alpha / 2);
+    const hi = quantile(sorted, 1 - alpha / 2);
     return [
-      quantile(
-        copy.sort((a, b) => a - b),
-        alpha / 2
-      ).toFixed(3),
-      quantile(
-        copy.sort((a, b) => a - b),
-        1 - alpha / 2
-      ).toFixed(3),
+      Number.isFinite(lo) ? lo.toFixed(3) : "N/A",
+      Number.isFinite(hi) ? hi.toFixed(3) : "N/A",
     ];
   };
 
   useEffect(() => {
-    if (sessionParams.data.length > 0 && sessionParams.checkedState !== "") {
-      setOutput({
-        minRate: _minRate(sessionParams.data),
-        maxRate: _maxRate(sessionParams.data),
-        cases: _k_alpha(sessionParams.data)[0],
-        k_alpha: _k_alpha(sessionParams.data)[1],
-        pairableRates: _k_alpha(sessionParams.data)[2],
-        upper: "",
-        lower: "",
-      });
+    if (sessionParams.data.length === 0 || sessionParams.checkedState === "")
+      return;
 
-      if (
-        sessionParams.CISize !==
-          initialSessionParams.filter((item) => item.name === "CISize")[0]
-            .value &&
-        // sessionParams.bootSampleSize !==
-        //   initialSessionParams.filter(
-        //     (item) => item.name !== "bootSampleSize"
-        //   )[0].value &&
-        sessionParams.bootIterations !==
-          initialSessionParams.filter(
-            (item) => item.name === "bootIterations"
-          )[0].value
-      ) {
-        // Bootstrap CI
-        const bootSamples =
-          sessionParams.bootIterations === "200 Iterations"
-            ? drawBootstrapSamples(sessionParams.data, 200)
-            : sessionParams.bootIterations === "400 Iterations"
-            ? drawBootstrapSamples(sessionParams.data, 400)
-            : sessionParams.bootIterations === "600 Iterations"
-            ? drawBootstrapSamples(sessionParams.data, 600)
-            : drawBootstrapSamples(sessionParams.data, 1000);
-        const k_alpha_boot = bootSamples.map((sample) => _k_alpha(sample)[1]);
-        const [lower, upper] = confidenceInterval(
-          k_alpha_boot,
-          sessionParams.CISize
-        );
-        setOutput({
-          minRate: _minRate(sessionParams.data),
-          maxRate: _maxRate(sessionParams.data),
-          cases: _k_alpha(sessionParams.data)[0],
-          k_alpha: _k_alpha(sessionParams.data)[1],
-          pairableRates: _k_alpha(sessionParams.data)[2],
-          lower: lower,
-          upper: upper,
-        });
-      }
+    // Compute once (instead of calling _k_alpha(...) 3 times)
+    const base = _k_alpha(sessionParams.data);
+    const minRate = _minRate(sessionParams.data);
+    const maxRate = _maxRate(sessionParams.data);
+
+    // First set: point estimate (no CI yet)
+    setOutput({
+      minRate,
+      maxRate,
+      cases: base[0],
+      k_alpha: base[1],
+      pairableRates: base[2],
+      lower: "",
+      upper: "",
+    });
+
+    const defaultCISize = initialSessionParams.find(
+      (item) => item.name === "CISize",
+    )?.value;
+    const defaultBootIter = initialSessionParams.find(
+      (item) => item.name === "bootIterations",
+    )?.value;
+
+    const wantBootstrap =
+      sessionParams.CISize !== defaultCISize &&
+      sessionParams.bootIterations !== defaultBootIter;
+
+    if (!wantBootstrap) return;
+
+    // Bootstrap CI
+    const iters =
+      sessionParams.bootIterations === "200 Iterations"
+        ? 200
+        : sessionParams.bootIterations === "400 Iterations"
+          ? 400
+          : sessionParams.bootIterations === "600 Iterations"
+            ? 600
+            : 1000;
+
+    const bootSamples = drawBootstrapSamples(
+      sessionParams.data,
+      iters,
+      minRate,
+      maxRate,
+    );
+
+    const k_alpha_boot = bootSamples
+      .map((sample) => _k_alpha(sample)[1])
+      .map((x) => Number(x))
+      .filter((x) => Number.isFinite(x));
+
+    if (k_alpha_boot.length === 0) {
+      setOutput((prev) => ({ ...prev, lower: "N/A", upper: "N/A" }));
+      return;
     }
+
+    const [lower, upper] = confidenceInterval(
+      k_alpha_boot,
+      sessionParams.CISize,
+    );
+
+    // Second set: add CI, but reuse base values/min/max already computed
+    setOutput((prev) => ({
+      ...prev,
+      lower,
+      upper,
+    }));
   }, [
     sessionParams.data,
     sessionParams.checkedState,
     sessionParams.CISize,
-    //sessionParams.bootSampleSize,
     sessionParams.bootIterations,
   ]);
 
-  const drawBootstrapSample = (data) => {
+  const getPairableUnits = (data, min, max) => {
+    return data.filter((arr) => {
+      let c = 0;
+      for (const num of arr) {
+        if (num === "" || num == null) continue;
+        const v = Number(num);
+        if (Number.isFinite(v) && v >= min && v <= max) c++;
+      }
+      return c > 1;
+    });
+  };
+
+  const drawBootstrapSample = (data, min, max) => {
+    const pool = getPairableUnits(data, min, max);
+    if (pool.length === 0) return [];
     const sample = [];
-    const sampleSize = countOccurrencesInRange(
-      data,
-      _minRate(data),
-      _maxRate(data)
-    ).length;
-    for (let i = 0; i < sampleSize; i++) {
-      sample.push(data[Math.floor(Math.random() * data.length)]);
+    for (let i = 0; i < pool.length; i++) {
+      sample.push(pool[Math.floor(Math.random() * pool.length)]);
     }
     return sample;
   };
 
-  const drawBootstrapSamples = (data, iterations) => {
+  const drawBootstrapSamples = (data, iterations, min, max) => {
     const samples = [];
     for (let i = 0; i < iterations; i++) {
-      samples.push(drawBootstrapSample(data));
+      samples.push(drawBootstrapSample(data, min, max));
     }
     return samples;
   };
@@ -347,7 +385,7 @@ export function Result() {
   return (
     <fieldset className="border border-solid border-gray-300 p-3 m-3">
       <legend className="text-base">
-        <b>Result</b>
+        <b>Results</b>
       </legend>
       {sessionParams.data.length === 0 && (
         <div className="m-3 text-red-600">&#8594; Upload a Data File</div>
@@ -391,7 +429,7 @@ export function Result() {
         //   )[0].value ||
         sessionParams.bootIterations ===
           initialSessionParams.filter(
-            (item) => item.name === "bootIterations"
+            (item) => item.name === "bootIterations",
           )[0].value) && (
         <div className="m-3 text-red-600">
           &#8594; Set the Bootstrap CI Parameters
@@ -408,7 +446,7 @@ export function Result() {
         //   )[0].value &&
         sessionParams.bootIterations !==
           initialSessionParams.filter(
-            (item) => item.name === "bootIterations"
+            (item) => item.name === "bootIterations",
           )[0].value && (
           <div className="mx-3 mb-3">
             <p>

@@ -34,7 +34,7 @@ export function DropZone() {
   const [bucketSessionParams, sessionParamsDispatch] =
     useContext(SessionParamsContext);
   const sessionParams = Object.fromEntries(
-    bucketSessionParams.map((item) => Object.values(item))
+    bucketSessionParams.map((item) => Object.values(item)),
   );
 
   const [errors, setErrors] = useState("");
@@ -48,7 +48,7 @@ export function DropZone() {
       return;
     }
     setIsVisible(true);
-    const timer = setTimeout(() => setIsVisible(false), 5000);
+    const timer = setTimeout(() => setIsVisible(false), 10000);
     return () => clearTimeout(timer);
   }, [errors]);
 
@@ -83,7 +83,7 @@ export function DropZone() {
       // Categorize the error
       if (
         invalidEntries.some(
-          (value) => typeof value === "number" && !Number.isInteger(value)
+          (value) => typeof value === "number" && !Number.isInteger(value),
         )
       ) {
         return "Error: The file contains decimal values";
@@ -98,7 +98,7 @@ export function DropZone() {
       }
       if (
         invalidEntries.some(
-          (value) => typeof value === "string" && /(Na|na|nA)/.test(value)
+          (value) => typeof value === "string" && /(Na|na|nA)/.test(value),
         )
       ) {
         return "Error: Use 'NA' for missing codes (case sensitive)";
@@ -163,17 +163,19 @@ export function DropZone() {
       }
 
       const convertedData = parsedData.map((row) =>
-        row.map((code) => (code === "NA" ? "" : code))
+        row.map((code) => (code === "NA" ? "" : code)),
       );
 
       if (_minRate(convertedData) === _maxRate(convertedData)) {
-        setErrors("Error: The minimum and maximum values must be different");
+        setErrors(
+          "Error: All ratings are identical. The dataset must include at least two different values.",
+        );
         setIsSuccess(false);
       } else {
         sessionParamsDispatch({ type: "setData", value: convertedData });
       }
     },
-    [sessionParamsDispatch]
+    [sessionParamsDispatch],
   );
 
   useEffect(() => {
@@ -209,7 +211,7 @@ export function DropZone() {
       ...(isDragAccept ? dropzoneStyles.acceptStyle : {}),
       ...(isDragReject ? dropzoneStyles.rejectStyle : {}),
     }),
-    [isDragActive, isDragReject, isDragAccept]
+    [isDragActive, isDragReject, isDragAccept],
   );
 
   const renderFileInfo = () => (
@@ -236,7 +238,7 @@ export function DropZone() {
           {sessionParams.data.reduce(
             (acc, curr) =>
               acc + curr.reduce((a, c) => a + (c === "" ? 1 : 0), 0),
-            0
+            0,
           )}
         </b>{" "}
         out of <b>{sessionParams.data[0].length * sessionParams.data.length}</b>
