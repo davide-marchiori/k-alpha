@@ -5,7 +5,8 @@
 1. [Introduction](#Introduction)
 2. [Software Description](#Software-Description)
 3. [Illustrative Examples](#Illustrative-Examples)
-4. [References](#References)
+4. [Release Notes](#Release-Notes)
+5. [References](#References)
 
 ---
 
@@ -14,6 +15,8 @@
 Inter-rater reliability is a cornerstone of rigorous empirical research in different contexts and domains. The K-Alpha Calculator, _Krippendorff's Alpha Calculator_, is designed to simplify the computation of Krippendorff’s Alpha, one of the most widely employed statistical measures for inter-rater reliability (Krippendorff, 2019).
 By providing a free tool with a user-friendly interface for calculating this coefficient, the K-Alpha Calculator aims to enhance research quality and reliability by offering an accessible and standalone tool for users.
 For an in-depth review of the theoretical and mathematical underpinnings of Krippendorff's Alpha, please refer to [Krippendorff (2019)](https://doi.org/10.4135/9781071878781). For a detailed overview of The K-Alpha Calculator please refer to our academic article, [Marzi et al. (2024)](https://doi.org/10.1016/j.mex.2023.102545).
+
+> **Users of the ratio scale, please read the [Version 2.1 release note](#version-21).** Ratio-scale results produced by versions up to and including 2.0, on datasets whose lowest rating was not 1, were computed incorrectly and should be recomputed. Nominal, ordinal and interval results are unaffected.
 
 ---
 
@@ -69,9 +72,35 @@ When a rater has not assigned a rate to an item, the corresponding cell should b
     3,NA,3,3
     2,2,2,2
 
+### Example Datasets
+
+The [`examples/`](examples/) folder contains eight ready-to-use `.csv` files together with the coefficients each one should produce. They cover complete and incomplete data, three- to six-rater designs, comma- and semicolon-separated files, perfect agreement, and a dataset the upload validation is expected to reject. Uploading them is a quick way to confirm the calculator is behaving as documented. See [`examples/README.md`](examples/README.md) for the expected output of each file.
+
 ---
 
 ## Release Notes
+
+### Version 2.1
+
+Version 2.1 corrects an error in the ratio-scale computation. Nominal, ordinal and interval computations are unchanged, as is the bootstrap procedure introduced in version 2.0.
+
+**The ratio scale now applies the difference function to the rate values themselves**
+
+Krippendorff's α for ratio data uses the difference function δ²(c,k) = ((c − k) / (c + k))², where c and k are the two rates being compared. In versions up to and including 2.0, the calculator derived this quantity from the position of each value within its internal count matrix rather than from the rate value itself. The numerator was unaffected, because it depends only on the difference between two rates and positions preserve differences. The denominator depends on their sum, which positions do not preserve: it came out as (c + k) − 2·(minimum rating − 1), which equals the required (c + k) only when the smallest rating in the dataset happens to be 1.
+
+The practical effect was that ratio-scale results were correct for datasets whose lowest rating was 1, and understated for every other dataset. The size of the discrepancy grows with the distance between the value domain and 1, and in reported cases it has been large enough to move a coefficient across the interpretive thresholds — from a value suggesting acceptable reliability to one suggesting inadequate reliability, or the reverse. From version 2.1 the two rate values are reconstructed and the difference function is applied to them directly, matching the published formula for every dataset.
+
+**If you have used the ratio scale, please check whether you need to recompute**
+
+Recomputation is needed if all of the following apply: you selected the **Ratio** data type, the smallest rating in your dataset was **not 1**, and you used a version **prior to 2.1**. If you selected Nominal, Ordinal or Interval, or if your lowest rating was 1, your results are unaffected and unchanged. Because the point estimate was unchanged between versions 1.1 and 2.0, this applies to all earlier releases, not only to 2.0.
+
+**Example datasets added**
+
+The new [`examples/`](examples/) folder provides eight test datasets with their expected output, described above. Two of them, `min-above-one.csv` and `min-above-one-shifted.csv`, differ only in that a constant has been added to every value in the second; because the ratio difference function contains a sum, the two must yield different ratio coefficients. Earlier versions returned the same coefficient for both.
+
+**Acknowledgement**
+
+The error was identified and reported by Muhaimin Abdullah, Ahmad Munir, Wiwiet Eva Savitri, Widya Rizky Pratiwi and Nasrullah A. (Abdullah et al., 2026), who confirmed it against the KALPHA SPSS macro of Hayes and Krippendorff (Hayes & Krippendorff, 2007). We are grateful for the clarity of their report, which set out both the derivation and the remedy.
 
 ### Version 2.0
 
@@ -96,6 +125,10 @@ The on-screen duration of file upload error messages has been extended from 5 se
 ---
 
 ## References
+
+Abdullah, M., Munir, A., Savitri, W. E., Pratiwi, W. R., & Nasrullah, A. (2026). Comment on "K-Alpha Calculator—Krippendorff's Alpha Calculator: A User-Friendly Tool for Computing Krippendorff's Alpha Inter-Rater Reliability Coefficient": Reconciling the Ratio-Scale Computational Implementation. _MethodsX_. [DOI to be added on publication]
+
+Hayes, A. F., & Krippendorff, K. (2007). Answering the Call for a Standard Reliability Measure for Coding Data. _Communication Methods and Measures_, _1_(1), 77–89. [https://doi.org/10.1080/19312450709336664](https://doi.org/10.1080/19312450709336664)
 
 Krippendorff, K. (2019). _Content Analysis: An Introduction to Its Methodology_ (4th ed.), SAGE Publications https://doi.org/10.4135/9781071878781
 

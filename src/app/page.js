@@ -13,7 +13,7 @@ export default function Home() {
       </SessionParamsContextProvider>
       <div className="grid justify-items-end m-3">
         <p></p>
-        <p className="text-sm text-gray-400">v2.0</p>
+        <p className="text-sm text-gray-400">v2.1</p>
       </div>
     </main>
   );

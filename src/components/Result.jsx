@@ -40,7 +40,7 @@ export function Result() {
   );
 
   const _computeAlpha = useCallback(
-    (VbyUMatrix, checkedState) => {
+    (VbyUMatrix, checkedState, minRate) => {
       if (!Array.isArray(VbyUMatrix) || VbyUMatrix.length === 0) return NaN;
       if (!Array.isArray(VbyUMatrix[0]) || VbyUMatrix[0].length === 0)
         return NaN;
@@ -55,6 +55,17 @@ export function Result() {
       const totRates = VbyUMatrix.flat().reduce((sum, num) => sum + num, 0);
 
       let numerator, denominator, denom;
+
+      // Ratio-scale difference function, Eq. (6): d2(c,k) = ((c - k) / (c + k))^2,
+      // where c and k are the actual rate values. Column position colIndex of the
+      // value-by-unit matrix corresponds to the value colIndex + minRate, so the
+      // values are reconstructed here rather than derived from index arithmetic.
+      const ratioDist = (colIndex, idx) => {
+        const c = colIndex + minRate;
+        const k = colIndex + idx + 1 + minRate;
+        const sum = c + k;
+        return sum === 0 ? 0 : Math.pow((c - k) / sum, 2);
+      };
 
       switch (checkedState) {
         case "nominal":
@@ -185,18 +196,14 @@ export function Result() {
           );
 
         case "ratio":
-          // Interval scale
+          // Ratio scale
           numerator = VbyUMatrix.map((row) =>
             row
               .map((value, colIndex) => {
                 return (
                   value *
                   row.slice(colIndex + 1).reduce((total, current, idx) => {
-                    return (
-                      total +
-                      current *
-                        Math.pow((idx + 1) / (colIndex + colIndex + idx + 3), 2)
-                    );
+                    return total + current * ratioDist(colIndex, idx);
                   }, 0)
                 );
               })
@@ -210,9 +217,7 @@ export function Result() {
                 .slice(colIndex + 1)
                 .reduce(
                   (total, current, idx) =>
-                    total +
-                    current *
-                      Math.pow((idx + 1) / (colIndex + colIndex + idx + 3), 2),
+                    total + current * ratioDist(colIndex, idx),
                   0,
                 )
             );
@@ -240,7 +245,11 @@ export function Result() {
     const VbyUMatrix = countMatrix.map((row) => row.slice(0, -1));
     const sumsByColCheck = VbyUMatrix[0]?.length ?? 0;
     if (sumsByColCheck === 0) return [0, NaN, 0];
-    const result = _computeAlpha(VbyUMatrix, sessionParams.checkedState);
+    const result = _computeAlpha(
+      VbyUMatrix,
+      sessionParams.checkedState,
+      minRate,
+    );
     const safeResult = Number.isFinite(result) ? result.toFixed(3) : "N/A";
     return [
       countMatrix.length,
