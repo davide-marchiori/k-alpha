@@ -138,4 +138,4 @@ For additional resources, please visit [k-alpha.org](https://www.k-alpha.org/).
 
 ---
 
-For further inquiries or support, please contact [Davide Marchiori](mailto:davide.marchiori@imtlucca.it)
+For further inquiries or support, please contact [Davide Marchiori](mailto:mrcdvd77@gmail.com)
